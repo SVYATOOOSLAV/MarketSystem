@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kurs.model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,19 +11,23 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Kurs
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for Window1.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public User user;
+        public MainWindow(User user)
         {
+            this.user = user;
             InitializeComponent();
+
+            loginTextBox.Text = user.login; 
+            roleTextBox.Text = user.role == null ? "user" : user.role;
         }
     }
 }
