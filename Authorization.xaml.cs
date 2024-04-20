@@ -1,4 +1,5 @@
-﻿using Kurs.model;
+﻿using Kurs.enums;
+using Kurs.model;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ namespace Kurs
 
             if (dataTable.Rows.Count == 1)
             {
-                User user = getUserFromDB(login, adapter, dataTable);
+                User user = getUserFromDB(dataTable);
                 MessageBox.Show("Вы успешно вошли", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
                 MainWindow win1 = new MainWindow(user);
                 this.Hide();
@@ -56,14 +57,8 @@ namespace Kurs
             }
         }
 
-        private User getUserFromDB(String login, SqlDataAdapter adapter, DataTable dataTable)
+        private User getUserFromDB(DataTable dataTable)
         {
-            String query = $"select * from user_auth where login_user='{login}'";
-            SqlCommand command2 = new SqlCommand(query, dataBase.getConnection());
-
-            adapter.SelectCommand = command2;
-            adapter.Fill(dataTable);
-
             DataRow row = dataTable.Rows[0];
             String userLogin = row["login_user"].ToString();
             String userPassword = row["password_user"].ToString();

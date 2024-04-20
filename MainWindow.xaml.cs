@@ -1,4 +1,5 @@
-﻿using Kurs.model;
+﻿using Kurs.enums;
+using Kurs.model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,8 +27,7 @@ namespace Kurs
             this.user = user;
             InitializeComponent();
 
-            loginTextBox.Text = user.login; 
-            roleTextBox.Text = user.role == null ? "user" : user.role;
+            userInfoButton.Content += user.role == TypeUser.USER.ToString().ToLower() ? " Пользователя" : " Администратора";
         }
     }
 }

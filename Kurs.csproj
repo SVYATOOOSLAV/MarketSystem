@@ -71,6 +71,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="enums\TypeUser.cs" />
+    <Compile Include="model\Product.cs" />
+    <Compile Include="enums\TypeProduct.cs" />
     <Compile Include="model\User.cs" />
     <Compile Include="Sign_Up.xaml.cs">
       <DependentUpon>Sign_Up.xaml</DependentUpon>
@@ -86,7 +89,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataBase.cs" />
+    <Compile Include="DataBase\DataBase.cs" />
     <Compile Include="Authorization.xaml.cs">
       <DependentUpon>Authorization.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -137,6 +140,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="service\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
