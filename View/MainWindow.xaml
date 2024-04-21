@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kurs"
         mc:Ignorable="d"
-        Title="UserDashBoard" Height="450" Width="800" ResizeMode="NoResize">
+        Title="UserDashBoard" Height="450" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
 
     <Grid>
-        <DataGrid  x:Name ="mainDataGrid" Background="Transparent" Foreground ="Black"  AutoGenerateColumns="False" IsReadOnly="True" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" HorizontalAlignment="Left" Width="444" Height="414" VerticalAlignment="Center" BorderBrush="Black" Margin="10,0,0,0">
+        <DataGrid  x:Name ="mainDataGrid" Background="Transparent" Foreground ="Black"  AutoGenerateColumns="False" IsReadOnly="True" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" HorizontalAlignment="Left" Width="444" Height="414" VerticalAlignment="Center" BorderBrush="Black" Margin="10,0,0,0" MouseDoubleClick="mainDataGrid_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Header ="Тип продукта" Binding="{Binding Path=typeProduct}" IsReadOnly="True"  Width="100" CanUserSort="False"/>
                 <DataGridTextColumn Header="Наименование продукта" Binding="{Binding Path=nameProfuct}" IsReadOnly="True" Width="150" CanUserSort="False"/>

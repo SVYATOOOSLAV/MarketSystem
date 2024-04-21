@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 
 namespace Kurs
 {
@@ -74,11 +75,50 @@ namespace Kurs
 
         private void userInfoButton_Click(object sender, RoutedEventArgs e)
         {
-            if(user.role == TypeUser.USER.ToString().ToLower())
+            if (user.role == TypeUser.USER.ToString().ToLower())
             {
                 UserLC userLC = new UserLC(user, this);
                 userLC.ShowDialog();
             }
+        }
+
+        private void mainDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            //todo refactor 
+            if (sender is DataGrid dataGrid && dataGrid.SelectedItem != null)
+            {
+                dataBase.openConnection();
+                SqlDataAdapter adapter = new SqlDataAdapter();
+                DataTable dataTable = new DataTable();
+                String query = $"select [type], [name], [description], [cost], numberForPurchase from product";
+                SqlCommand command = new SqlCommand(query, dataBase.getConnection());
+
+                adapter.SelectCommand = command;
+                adapter.Fill(dataTable);
+                dataBase.closeConnection();
+
+                List<Product> products = getListProduct(dataTable);
+
+                Product item = (Product)dataGrid.SelectedItem;
+
+                Product currentProduct = getCurrentProduct(products, item.nameProfuct);
+
+                ProductCardUser productCard = new ProductCardUser(user, currentProduct);
+                productCard.ShowDialog();
+
+            }
+        }
+
+        private Product getCurrentProduct(List<Product> products, String name)
+        {
+            foreach(Product product in products)
+            {
+                if (product.nameProfuct.Equals(name))
+                {
+                    return product;
+                }
+            }
+            throw new KeyNotFoundException("Продукт не был найден");
         }
     }
 }

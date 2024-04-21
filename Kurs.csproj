@@ -75,16 +75,19 @@
     <Compile Include="model\Product.cs" />
     <Compile Include="enums\TypeProduct.cs" />
     <Compile Include="model\User.cs" />
-    <Compile Include="Sign_Up.xaml.cs">
+    <Compile Include="View\User\ProductCardUser.xaml.cs">
+      <DependentUpon>ProductCardUser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Sign_Up.xaml.cs">
       <DependentUpon>Sign_Up.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="View\User\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserLC.xaml.cs">
+    <Compile Include="View\User\UserLC.xaml.cs">
       <DependentUpon>UserLC.xaml</DependentUpon>
     </Compile>
-    <Page Include="Authorization.xaml">
+    <Page Include="View\Authorization.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -93,19 +96,23 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataBase\DataBase.cs" />
-    <Compile Include="Authorization.xaml.cs">
+    <Compile Include="View\Authorization.xaml.cs">
       <DependentUpon>Authorization.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Sign_Up.xaml">
+    <Page Include="View\User\ProductCardUser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="View\Sign_Up.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserLC.xaml">
+    <Page Include="View\User\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\User\UserLC.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -150,6 +157,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="service\" />
+    <Folder Include="View\Admin\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
