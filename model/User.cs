@@ -11,6 +11,7 @@ namespace Kurs.model
         public String login { get; set; }
         public String password { get; set; }
         public String role { get; set; }
+        private List<Product> bucket = new List<Product>();
 
         public User(String login, String password, String role)
         {
@@ -18,6 +19,8 @@ namespace Kurs.model
             this.password = password;
             this.role = role;
         }
+
+        public void addProductToBucket(Product product) => bucket.Add(product);
 
     }
 }

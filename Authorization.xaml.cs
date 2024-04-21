@@ -27,6 +27,7 @@ namespace Kurs
         public Authorization()
         {
             InitializeComponent();
+            dataBase.openConnection();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -42,6 +43,7 @@ namespace Kurs
 
             adapter.SelectCommand = command;
             adapter.Fill(dataTable);
+            dataBase.closeConnection();
 
             if (dataTable.Rows.Count == 1)
             {
@@ -64,7 +66,7 @@ namespace Kurs
             String userPassword = row["password_user"].ToString();
             String userRole = row["role"].ToString();
 
-            return new User(userLogin, userPassword, userRole == "" ? "user" : "admin");
+            return new User(userLogin, userPassword, userRole);
         }
 
         private void Label_MouseDoubleClick(object sender, MouseButtonEventArgs e)
