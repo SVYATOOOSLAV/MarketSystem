@@ -48,9 +48,11 @@ namespace Kurs
             if (dataTable.Rows.Count == 1)
             {
                 User user = getUserFromDB(dataTable);
+                user.budget = getUserBudget(login);
+
                 MessageBox.Show("Вы успешно вошли", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
                 MainWindow win1 = new MainWindow(user);
-                this.Hide();
+                this.Close();
                 win1.ShowDialog();
             }
             else
@@ -67,6 +69,20 @@ namespace Kurs
             String userRole = row["role"].ToString();
 
             return new User(userLogin, userPassword, userRole);
+        }
+
+        private Double getUserBudget(String login)
+        {
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            DataTable dataTable = new DataTable();
+
+            String query = "select budget from user_info where id_user in (Select id_user from user_auth where login_user=@login)";
+            SqlCommand command = new SqlCommand(query, dataBase.getConnection());
+            command.Parameters.AddWithValue("@login", login);
+            adapter.SelectCommand = command;
+            adapter.Fill(dataTable);
+
+           return Double.Parse(dataTable.Rows[0]["budget"].ToString());
         }
 
         private void Label_MouseDoubleClick(object sender, MouseButtonEventArgs e)

@@ -8,7 +8,7 @@
         Title="UserDashBoard" Height="450" Width="800" ResizeMode="NoResize">
 
     <Grid>
-        <DataGrid  x:Name ="mainDataGrid" Background="Transparent" Foreground ="Black"  AutoGenerateColumns="False" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" HorizontalAlignment="Left" Width="444" Height="414" VerticalAlignment="Center" BorderBrush="Black" Margin="10,0,0,0">
+        <DataGrid  x:Name ="mainDataGrid" Background="Transparent" Foreground ="Black"  AutoGenerateColumns="False" IsReadOnly="True" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" HorizontalAlignment="Left" Width="444" Height="414" VerticalAlignment="Center" BorderBrush="Black" Margin="10,0,0,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header ="Тип продукта" Binding="{Binding Path=typeProduct}" IsReadOnly="True"  Width="100" CanUserSort="False"/>
                 <DataGridTextColumn Header="Наименование продукта" Binding="{Binding Path=nameProfuct}" IsReadOnly="True" Width="150" CanUserSort="False"/>
@@ -16,6 +16,6 @@
                 <DataGridTextColumn Header="В наличии (штук)" Binding="{Binding Path=numberForPurchase}" IsReadOnly="True" Width="110"  CanUserSort="False"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="userInfoButton" Content="ЛК" HorizontalAlignment="Left" Margin="652,10,0,0" VerticalAlignment="Top" Height="34" Width="138"/>
+        <Button x:Name="userInfoButton" Content="ЛК" HorizontalAlignment="Left" Margin="652,10,0,0" VerticalAlignment="Top" Height="34" Width="138" Click="userInfoButton_Click"/>
     </Grid>
 </Window>

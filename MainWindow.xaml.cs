@@ -71,5 +71,14 @@ namespace Kurs
 
             return products;
         }
+
+        private void userInfoButton_Click(object sender, RoutedEventArgs e)
+        {
+            if(user.role == TypeUser.USER.ToString().ToLower())
+            {
+                UserLC userLC = new UserLC(user, this);
+                userLC.ShowDialog();
+            }
+        }
     }
 }

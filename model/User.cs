@@ -11,6 +11,7 @@ namespace Kurs.model
         public String login { get; set; }
         public String password { get; set; }
         public String role { get; set; }
+        public Double budget { get; set; }
         private List<Product> bucket = new List<Product>();
 
         public User(String login, String password, String role)
