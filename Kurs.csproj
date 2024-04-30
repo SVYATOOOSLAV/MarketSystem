@@ -82,8 +82,8 @@
     <Compile Include="View\admin\MainWindowAdmin.xaml.cs">
       <DependentUpon>MainWindowAdmin.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\user\Basket.xaml.cs">
-      <DependentUpon>Basket.xaml</DependentUpon>
+    <Compile Include="View\user\BasketWindow.xaml.cs">
+      <DependentUpon>BasketWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\user\ProductCardUser.xaml.cs">
       <DependentUpon>ProductCardUser.xaml</DependentUpon>
@@ -118,7 +118,7 @@
       <DependentUpon>Authorization.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="View\user\Basket.xaml">
+    <Page Include="View\user\BasketWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

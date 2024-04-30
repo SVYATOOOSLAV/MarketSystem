@@ -106,8 +106,8 @@ namespace Kurs
 
         private void BasketButton_Click(object sender, RoutedEventArgs e)
         {
-            Basket basket = new Basket(user);
-            basket.ShowDialog();
+            BasketWindow basketWin = new BasketWindow(user);
+            basketWin.ShowDialog();
         }
     }
 }

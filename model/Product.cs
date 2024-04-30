@@ -22,5 +22,26 @@ namespace Kurs.model
             this.costProduct = costProduct;
             this.numberForPurchase = numberForPurchase;
         }
+
+        public override bool Equals(object obj)
+        {
+            return obj is Product product &&
+                   typeProduct == product.typeProduct &&
+                   nameProfuct == product.nameProfuct &&
+                   descriptionProfuct == product.descriptionProfuct &&
+                   costProduct == product.costProduct &&
+                   numberForPurchase == product.numberForPurchase;
+        }
+
+        public override int GetHashCode()
+        {
+            int hashCode = -61797700;
+            hashCode = hashCode * -1521134295 + typeProduct.GetHashCode();
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(nameProfuct);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(descriptionProfuct);
+            hashCode = hashCode * -1521134295 + costProduct.GetHashCode();
+            hashCode = hashCode * -1521134295 + numberForPurchase.GetHashCode();
+            return hashCode;
+        }
     }
 }

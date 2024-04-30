@@ -10,15 +10,15 @@ namespace Kurs.model
     {
         public String login { get; set; }
         public Double budget { get; set; }
-        private List<Product> basket = new List<Product>();
-
+        private Dictionary<Product, int> basket = new Dictionary<Product, int>();
+        
         public User(String login, Double budget)
         {
             this.login = login;
             this.budget = budget;
         }
 
-        public void addProductToBucket(Product product) => basket.Add(product);
+        public void addProductToBasket(Product product, int count) => basket.Add(product, count);
 
     }
 }

@@ -18,10 +18,10 @@ namespace Kurs.View.user
     /// <summary>
     /// Interaction logic for Basket.xaml
     /// </summary>
-    public partial class Basket : Window
+    public partial class BasketWindow : Window
     {
         private User user;
-        public Basket(User user)
+        public BasketWindow(User user)
         {
             InitializeComponent();
             this.user = user;
