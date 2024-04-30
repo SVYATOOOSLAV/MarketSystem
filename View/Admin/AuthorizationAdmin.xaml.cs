@@ -1,12 +1,9 @@
-﻿using Kurs.enums;
-using Kurs.model;
+﻿using Kurs.model;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,18 +13,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Kurs
+namespace Kurs.View.Admin
 {
-    public partial class Authorization : Window
+    /// <summary>
+    /// Interaction logic for AuthorizationAdmin.xaml
+    /// </summary>
+    public partial class AuthorizationAdmin : Window
     {
         DataBase dataBase = new DataBase();
-        public Authorization()
+        public AuthorizationAdmin()
         {
             InitializeComponent();
-            dataBase.openConnection();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -38,9 +36,8 @@ namespace Kurs
             SqlDataAdapter adapter = new SqlDataAdapter();
             DataTable dataTable = new DataTable();
 
-            String query = $"select UA.login_user, UI.budget " +
-                $"from user_auth UA left join user_info UI on UA.id_user = UI.id_user " +
-                $"where UA.login_user=@login and UA.password_user=@password";
+            String query = $"select AA.login_admin from admin_auth AA " +
+                $"where AA.login_admin=@login and AA.password_admin=@password";
 
             SqlCommand command = new SqlCommand(query, dataBase.getConnection());
             command.Parameters.AddWithValue("@login", login);
@@ -63,22 +60,6 @@ namespace Kurs
             {
                 MessageBox.Show("Такого аккаунта не существует", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-        }
-
-        private User getUserFromDB(DataTable dataTable)
-        {
-            DataRow row = dataTable.Rows[0];
-            String userLogin = row["login_user"].ToString();
-            Double budget = Convert.ToDouble(row["budget"].ToString());
-
-            return new User(userLogin, budget);
-        }
-
-        private void Label_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            Sign_Up sign = new Sign_Up();
-            sign.Show();
-            this.Hide();
         }
     }
 }

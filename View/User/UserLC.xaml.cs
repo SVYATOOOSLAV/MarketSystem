@@ -23,10 +23,10 @@ namespace Kurs
     public partial class UserLC : Window
     {
         private User user;
-        private MainWindow latestMainWindow;
+        private MainWindowUser latestMainWindow;
         private DataBase dataBase = new DataBase();
 
-        public UserLC(User user, MainWindow mainWindow)
+        public UserLC(User user, MainWindowUser mainWindow)
         {
             InitializeComponent();
 
@@ -34,7 +34,7 @@ namespace Kurs
             latestMainWindow = mainWindow;
 
             loginTextBox.Text = user.login;
-            roleTextBox.Text = user.role;
+            roleTextBox.Text = "user";
             budgetTextBox.Text = user.budget.ToString();
         }
 

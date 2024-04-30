@@ -72,21 +72,29 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="enums\TypeUser.cs" />
+    <Compile Include="model\Admin.cs" />
     <Compile Include="model\Product.cs" />
     <Compile Include="enums\TypeProduct.cs" />
     <Compile Include="model\User.cs" />
+    <Compile Include="View\Admin\AuthorizationAdmin.xaml.cs">
+      <DependentUpon>AuthorizationAdmin.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\User\ProductCardUser.xaml.cs">
       <DependentUpon>ProductCardUser.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Sign_Up.xaml.cs">
       <DependentUpon>Sign_Up.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\User\MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
+    <Compile Include="View\User\MainWindowUser.xaml.cs">
+      <DependentUpon>MainWindowUser.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\User\UserLC.xaml.cs">
       <DependentUpon>UserLC.xaml</DependentUpon>
     </Compile>
+    <Page Include="View\Admin\AuthorizationAdmin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Authorization.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -108,7 +116,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\User\MainWindow.xaml">
+    <Page Include="View\User\MainWindowUser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -157,7 +165,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="service\" />
-    <Folder Include="View\Admin\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

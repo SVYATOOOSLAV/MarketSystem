@@ -9,16 +9,13 @@ namespace Kurs.model
     public class User
     {
         public String login { get; set; }
-        public String password { get; set; }
-        public String role { get; set; }
         public Double budget { get; set; }
         private List<Product> bucket = new List<Product>();
 
-        public User(String login, String password, String role)
+        public User(String login, Double budget)
         {
             this.login = login;
-            this.password = password;
-            this.role = role;
+            this.budget = budget;
         }
 
         public void addProductToBucket(Product product) => bucket.Add(product);

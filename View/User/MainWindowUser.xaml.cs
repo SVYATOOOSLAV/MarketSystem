@@ -22,19 +22,16 @@ namespace Kurs
     /// <summary>
     /// Interaction logic for Window1.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindowUser : Window
     {
         private User user;
         private DataBase dataBase = new DataBase();
-        public MainWindow(User user)
+        List<Product> products;
+        public MainWindowUser(User user)
         {
             this.user = user;
             InitializeComponent();
-
-            userInfoButton.Content += user.role == TypeUser.USER.ToString().ToLower() ? " Пользователя" : " Администратора";
-
             initDataGrid();
-
         }
 
         private void initDataGrid()
@@ -50,7 +47,7 @@ namespace Kurs
             adapter.Fill(dataTable);
             dataBase.closeConnection();
 
-            List<Product> products = getListProduct(dataTable);
+            products = getListProduct(dataTable);
             mainDataGrid.ItemsSource = products;
         }
 
@@ -75,11 +72,8 @@ namespace Kurs
 
         private void userInfoButton_Click(object sender, RoutedEventArgs e)
         {
-            if (user.role == TypeUser.USER.ToString().ToLower())
-            {
-                UserLC userLC = new UserLC(user, this);
-                userLC.ShowDialog();
-            }
+            UserLC userLC = new UserLC(user, this);
+            userLC.ShowDialog();
         }
 
         private void mainDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -87,18 +81,6 @@ namespace Kurs
             //todo refactor 
             if (sender is DataGrid dataGrid && dataGrid.SelectedItem != null)
             {
-                dataBase.openConnection();
-                SqlDataAdapter adapter = new SqlDataAdapter();
-                DataTable dataTable = new DataTable();
-                String query = $"select [type], [name], [description], [cost], numberForPurchase from product";
-                SqlCommand command = new SqlCommand(query, dataBase.getConnection());
-
-                adapter.SelectCommand = command;
-                adapter.Fill(dataTable);
-                dataBase.closeConnection();
-
-                List<Product> products = getListProduct(dataTable);
-
                 Product item = (Product)dataGrid.SelectedItem;
 
                 Product currentProduct = getCurrentProduct(products, item.nameProfuct);
@@ -111,7 +93,7 @@ namespace Kurs
 
         private Product getCurrentProduct(List<Product> products, String name)
         {
-            foreach(Product product in products)
+            foreach (Product product in products)
             {
                 if (product.nameProfuct.Equals(name))
                 {
