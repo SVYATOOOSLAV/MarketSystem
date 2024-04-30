@@ -28,21 +28,20 @@ namespace Kurs
         DataBase dataBase = new DataBase();
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            
+            dataBase.openConnection();
+
             String login = loginTextBox.Text;
             String password = passwordTextBox.Text;
 
-            String query = $"insert into user_auth(login_user, password_user) values('{login}','{password}')";
-            SqlCommand command = new SqlCommand(query, dataBase.getConnection());
-
-            if (isUserExist()) 
+            if (isUserExist())
             {
                 return;
             }
 
-            dataBase.openConnection();
+            String query = $"insert into user_auth(login_user, password_user) values('{login}','{password}')";
+            SqlCommand command = new SqlCommand(query, dataBase.getConnection());
 
-            if(command.ExecuteNonQuery() == 1 ) 
+            if (command.ExecuteNonQuery() == 1)
             {
                 MessageBox.Show("Аккаунт создан", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
@@ -51,6 +50,10 @@ namespace Kurs
             {
                 MessageBox.Show("Аккаунт не создан");
             }
+
+            query = $"insert into user_info('{login}',budget) values(0)";
+            command = new SqlCommand(query, dataBase.getConnection());
+            command.ExecuteNonQuery();
 
             dataBase.closeConnection();
         }
@@ -67,9 +70,9 @@ namespace Kurs
 
             adapter.SelectCommand = command;
             adapter.Fill(dataTable);
-            
 
-            if(dataTable.Rows.Count > 0 )
+
+            if (dataTable.Rows.Count > 0)
             {
                 MessageBox.Show("Аккаунт уже существует", "Ошибка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 return true;

@@ -10,7 +10,7 @@ namespace Kurs.model
     {
         public String login { get; set; }
         public Double budget { get; set; }
-        private Dictionary<Product, int> basket = new Dictionary<Product, int>();
+        public Dictionary<Product, int> basket = new Dictionary<Product, int>();
         
         public User(String login, Double budget)
         {
@@ -18,7 +18,16 @@ namespace Kurs.model
             this.budget = budget;
         }
 
-        public void addProductToBasket(Product product, int count) => basket.Add(product, count);
-
+        public void addProductToBasket(Product product)
+        {
+            if (basket.ContainsKey(product))
+            {
+                basket[product] += 1;
+            }
+            else
+            {
+                basket.Add(product, 1);
+            }
+        }
     }
 }

@@ -35,7 +35,8 @@ namespace Kurs
             this.product = product;
 
             addContentOnWindow();
-
+            var desiredCount = user.basket.FirstOrDefault(pair => pair.Key.nameProfuct.Equals(nameProduct)).Value;
+            countForPurchaseTextBox.Text = desiredCount.ToString();
         }
 
         private void addContentOnWindow()
@@ -48,15 +49,10 @@ namespace Kurs
             numberForPurchase.Content = product.numberForPurchase;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void plusButton_Click(object sender, RoutedEventArgs e)
         {
-            int desiredCountForPurchase = int.Parse(countForPurchaseTextBox.Text);
-            if(desiredCountForPurchase < 0)
-            {
-                MessageBox.Show("Количество меньше нуля");
-                return;
-            }
-            //todo Сделать проверку на наличие товара 
+            int currentCount = int.Parse(countForPurchaseTextBox.Text);
+
             dataBase.openConnection();
 
             String query = $"select numberForPurchase from product where name=@nameProduct";
@@ -64,25 +60,25 @@ namespace Kurs
             command.Parameters.AddWithValue("@nameProduct", product.nameProfuct);
             adapter.SelectCommand = command;
             adapter.Fill(dataTable);
-
             int numberForPurchaseInDB = int.Parse(dataTable.Rows[0]["numberForPurchase"].ToString());
 
-            if(numberForPurchaseInDB < desiredCountForPurchase)
+            if (numberForPurchaseInDB < currentCount + 1)
             {
                 MessageBox.Show("На складе нет столько товара, обратитесь к администартору");
                 return;
             }
 
+            countForPurchaseTextBox.Text = (currentCount + 1).ToString();
+
             query = $"update product set numberForPurchase=@count where product.name=@name";
             command = new SqlCommand(query, dataBase.getConnection());
-            command.Parameters.AddWithValue("@count", numberForPurchaseInDB - desiredCountForPurchase);
+            command.Parameters.AddWithValue("@count", numberForPurchaseInDB - 1);
             command.Parameters.AddWithValue("@name", product.nameProfuct);
             command.ExecuteNonQuery();
 
-            user.addProductToBasket(product, desiredCountForPurchase);
+            user.addProductToBasket(product);
 
             dataBase.closeConnection();
-
         }
     }
 }

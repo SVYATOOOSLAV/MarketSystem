@@ -17,16 +17,17 @@
         <Label x:Name="costProduct" Content="0" HorizontalAlignment="Left" Margin="237,216,0,0" VerticalAlignment="Top"/>
         <Label Content="В наличии(штук)" HorizontalAlignment="Left" Margin="63,247,0,0" VerticalAlignment="Top"/>
         <Label x:Name="numberForPurchase" Content="0" HorizontalAlignment="Left" Margin="237,247,0,0" VerticalAlignment="Top"/>
-        <RichTextBox x:Name="descriptionProduct" Margin="235,125,264,112">
+        <RichTextBox x:Name="descriptionProduct" Margin="235,125,264,112" IsReadOnly="True">
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <Label Content="Обновить количество товара" HorizontalAlignment="Left" Margin="546,30,0,0" VerticalAlignment="Top" />
-        <TextBox x:Name="countForPurchaseTextBox" HorizontalAlignment="Left" Margin="558,61,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
-        <Button Content="Обновить" HorizontalAlignment="Left" Margin="588,92,0,0" VerticalAlignment="Top" Width="86" Click="Button_Click"/>
+        <TextBox x:Name="countForPurchaseTextBox" HorizontalAlignment="Left" Margin="620,74,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="48" IsReadOnly="True" Height="26" BorderBrush="Black" TextAlignment="Center"/>
+        <TextBlock HorizontalAlignment="Left" Margin="572,29,0,0" TextWrapping="Wrap" Text="Обновить количество товара в корзине" VerticalAlignment="Top" Width="143" TextAlignment="Center"/>
+        <Button x:Name="plusButton" Content="+" HorizontalAlignment="Left" Margin="689,74,0,0" VerticalAlignment="Top" Height="26" Width="26" FontWeight="Bold" BorderBrush="Black" Foreground="Black" Background="White" Click="plusButton_Click"/>
+        <Button x:Name="minusButton" Content="-" HorizontalAlignment="Left" Margin="572,74,0,0" VerticalAlignment="Top" Height="26" Width="26" FontWeight="Bold" Background="White" BorderBrush="Black"/>
 
     </Grid>
 </Window>

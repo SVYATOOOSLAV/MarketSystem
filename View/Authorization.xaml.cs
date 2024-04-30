@@ -40,7 +40,7 @@ namespace Kurs
             DataTable dataTable = new DataTable();
 
             String query = $"select UA.login_user, UI.budget " +
-                $"from user_auth UA left join user_info UI on UA.id_user = UI.id_user " +
+                $"from user_auth UA left join user_info UI on UA.login_user = UI.login_user " +
                 $"where UA.login_user=@login and UA.password_user=@password";
 
             SqlCommand command = new SqlCommand(query, dataBase.getConnection());
