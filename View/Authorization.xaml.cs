@@ -1,5 +1,6 @@
 ﻿using Kurs.enums;
 using Kurs.model;
+using Kurs.View.Admin;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -74,11 +75,17 @@ namespace Kurs
             return new User(userLogin, budget);
         }
 
-        private void Label_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        private void createAcc_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             Sign_Up sign = new Sign_Up();
-            sign.Show();
-            this.Hide();
+            sign.ShowDialog();
+        }
+
+        private void adminAuth_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            AuthorizationAdmin auth = new AuthorizationAdmin(); 
+            this.Close(); 
+            auth.ShowDialog();
         }
     }
 }

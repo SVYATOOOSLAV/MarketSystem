@@ -45,9 +45,7 @@ namespace Kurs
             if(command.ExecuteNonQuery() == 1 ) 
             {
                 MessageBox.Show("Аккаунт создан", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                Authorization main = new Authorization();
                 this.Close();
-                main.ShowDialog();
             }
             else
             {

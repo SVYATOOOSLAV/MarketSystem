@@ -30,7 +30,8 @@ namespace Kurs
 
             typeProduct.Content = product.typeProduct;
             nameProduct.Content = product.nameProfuct;
-            descriptionProduct.Content = product.descriptionProfuct;
+            TextRange textRange = new TextRange(descriptionProduct.Document.ContentStart, descriptionProduct.Document.ContentEnd);
+            textRange.Text = product.descriptionProfuct;
             costProduct.Content = product.costProduct;
             numberForPurchase.Content = product.numberForPurchase;
         }

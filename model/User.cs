@@ -10,7 +10,7 @@ namespace Kurs.model
     {
         public String login { get; set; }
         public Double budget { get; set; }
-        private List<Product> bucket = new List<Product>();
+        private List<Product> basket = new List<Product>();
 
         public User(String login, Double budget)
         {
@@ -18,7 +18,7 @@ namespace Kurs.model
             this.budget = budget;
         }
 
-        public void addProductToBucket(Product product) => bucket.Add(product);
+        public void addProductToBucket(Product product) => basket.Add(product);
 
     }
 }

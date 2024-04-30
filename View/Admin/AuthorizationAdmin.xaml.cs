@@ -1,19 +1,9 @@
-﻿using Kurs.model;
+﻿
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Kurs.model;
 
 namespace Kurs.View.Admin
 {
@@ -49,10 +39,10 @@ namespace Kurs.View.Admin
 
             if (dataTable.Rows.Count == 1)
             {
-                User user = getUserFromDB(dataTable);
+                model.Admin admin = getUserFromDB(dataTable);
 
                 MessageBox.Show("Вы успешно вошли", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
-                MainWindowUser userWindow = new MainWindowUser(user);
+                MainWindowAdmin userWindow = new MainWindowAdmin(admin);
                 this.Close();
                 userWindow.ShowDialog();
             }
@@ -60,6 +50,14 @@ namespace Kurs.View.Admin
             {
                 MessageBox.Show("Такого аккаунта не существует", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        private model.Admin getUserFromDB(DataTable dataTable)
+        {
+            DataRow row = dataTable.Rows[0];
+            String login = row["login_admin"].ToString();
+
+            return new model.Admin(login);
         }
     }
 }

@@ -25,8 +25,8 @@
         </Label>
         <Label Content="Логин" HorizontalAlignment="Left" Margin="51,99,0,0" VerticalAlignment="Top" FontSize="14" Height="29" Width="49" HorizontalContentAlignment="Center"/>
         <Label Content="Пароль" HorizontalAlignment="Left" Margin="44,152,0,0" VerticalAlignment="Top" FontSize="14" Height="29" Width="62" HorizontalContentAlignment="Center"/>
-        <Label x:Name="createAcc" Content="Еще нет аккаунта?" HorizontalAlignment="Left" Margin="118,236,0,0" VerticalAlignment="Top" Height="27" Width="130" HorizontalContentAlignment="Center" MouseDoubleClick="Label_MouseDoubleClick" Background="#00000000" FontStyle="Italic" FontWeight="Bold" />
-        <Label Content="Вход для сотрудников" HorizontalAlignment="Left" Margin="117,283,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="createAcc" Content="Еще нет аккаунта?" HorizontalAlignment="Left" Margin="118,236,0,0" VerticalAlignment="Top" Height="27" Width="130" HorizontalContentAlignment="Center" MouseDoubleClick="createAcc_MouseDoubleClick" Background="#00000000" FontStyle="Italic" FontWeight="Bold" />
+        <Label x:Name="adminAuth" Content="Вход для сотрудников" HorizontalAlignment="Left" Margin="117,283,0,0" VerticalAlignment="Top" MouseDoubleClick="adminAuth_MouseDoubleClick" Background="#FFF4F4F4"/>
 
 
     </Grid>

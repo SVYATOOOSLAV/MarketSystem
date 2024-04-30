@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml.Linq;
+using Kurs.View.user;
 
 namespace Kurs
 {
@@ -101,6 +102,12 @@ namespace Kurs
                 }
             }
             throw new KeyNotFoundException("Продукт не был найден");
+        }
+
+        private void BasketButton_Click(object sender, RoutedEventArgs e)
+        {
+            Basket basket = new Basket(user);
+            basket.ShowDialog();
         }
     }
 }

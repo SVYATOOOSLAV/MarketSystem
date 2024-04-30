@@ -16,6 +16,7 @@
                 <DataGridTextColumn Header="В наличии (штук)" Binding="{Binding Path=numberForPurchase}" IsReadOnly="True" Width="110"  CanUserSort="False"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button x:Name="userInfoButton" Content="ЛК" HorizontalAlignment="Left" Margin="652,10,0,0" VerticalAlignment="Top" Height="34" Width="138" Click="userInfoButton_Click"/>
+        <Button x:Name="userInfoButton" Content="ЛК" HorizontalAlignment="Left" Margin="705,10,0,0" VerticalAlignment="Top" Height="34" Width="85" Click="userInfoButton_Click"/>
+        <Button x:Name="BasketButton" Content="Корзина" HorizontalAlignment="Left" Margin="602,10,0,0" VerticalAlignment="Top" Height="35" Width="60" Click="BasketButton_Click"/>
     </Grid>
 </Window>

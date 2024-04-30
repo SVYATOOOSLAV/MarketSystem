@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Kurs.model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,18 +13,20 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace Kurs.View.Admin
+namespace Kurs.View.user
 {
     /// <summary>
-    /// Interaction logic for MainWindowAdmin.xaml
+    /// Interaction logic for Basket.xaml
     /// </summary>
-    public partial class MainWindowAdmin : Window
+    public partial class Basket : Window
     {
-        private model.Admin admin;
-        public MainWindowAdmin(model.Admin admin)
+        private User user;
+        public Basket(User user)
         {
             InitializeComponent();
-            this.admin = admin;
+            this.user = user;
+
+            userLabel.Content += user.login;
         }
     }
 }

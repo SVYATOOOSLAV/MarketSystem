@@ -5,18 +5,28 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kurs"
         mc:Ignorable="d"
-        Title="ProductCard" Height="302" Width="726" ResizeMode="NoResize" WindowStartupLocation="CenterOwner"> 
+        Title="ProductCard" Height="328" Width="728" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Grid>
         <Label Content="Тип товара" HorizontalAlignment="Left" Margin="56,48,0,0" VerticalAlignment="Top"/>
-        <Label Name="typeProduct" Content="" HorizontalAlignment="Left" Margin="230,48,0,0" VerticalAlignment="Top"/>
+        <Label Name="typeProduct" Content="Тип" HorizontalAlignment="Left" Margin="230,48,0,0" VerticalAlignment="Top"/>
         <Label Content="Наименование" HorizontalAlignment="Left" Margin="56,79,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="nameProduct" Content="" HorizontalAlignment="Left" Margin="230,79,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="nameProduct" Content="Наименование" HorizontalAlignment="Left" Margin="230,79,0,0" VerticalAlignment="Top"/>
         <Label Content="Описание товара" HorizontalAlignment="Left" Margin="56,112,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="descriptionProduct" Content="" HorizontalAlignment="Left" Margin="230,112,0,0" VerticalAlignment="Top"/>
-        <Label Content="Цена" HorizontalAlignment="Left" Margin="56,143,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="costProduct" Content="" HorizontalAlignment="Left" Margin="230,143,0,0" VerticalAlignment="Top"/>
-        <Label Content="В наличии" HorizontalAlignment="Left" Margin="60,174,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="numberForPurchase" Content="" HorizontalAlignment="Left" Margin="230,174,0,0" VerticalAlignment="Top"/>
+
+        <Label Content="Цена (в руб.)" HorizontalAlignment="Left" Margin="63,216,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="costProduct" Content="0" HorizontalAlignment="Left" Margin="237,216,0,0" VerticalAlignment="Top"/>
+        <Label Content="В наличии(штук)" HorizontalAlignment="Left" Margin="63,247,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="numberForPurchase" Content="0" HorizontalAlignment="Left" Margin="237,247,0,0" VerticalAlignment="Top"/>
+        <RichTextBox x:Name="descriptionProduct" Margin="235,125,181,112">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text=""/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <Label Content="Добавить в корзину штук" HorizontalAlignment="Left" Margin="558,30,0,0" VerticalAlignment="Top"/>
+        <TextBox HorizontalAlignment="Left" Margin="558,61,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150"/>
+        <Button Content="Добавить" HorizontalAlignment="Left" Margin="588,92,0,0" VerticalAlignment="Top" Width="86"/>
 
     </Grid>
 </Window>
