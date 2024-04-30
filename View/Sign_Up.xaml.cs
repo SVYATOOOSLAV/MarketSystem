@@ -51,7 +51,7 @@ namespace Kurs
                 MessageBox.Show("Аккаунт не создан");
             }
 
-            query = $"insert into user_info('{login}',budget) values(0)";
+            query = $"insert into user_info(login_user,budget) values('{login}',0)";
             command = new SqlCommand(query, dataBase.getConnection());
             command.ExecuteNonQuery();
 
