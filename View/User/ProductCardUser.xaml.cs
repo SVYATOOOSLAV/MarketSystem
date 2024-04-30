@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.ComponentModel;
 
 namespace Kurs
 {
@@ -27,40 +28,60 @@ namespace Kurs
         private DataBase dataBase = new DataBase();
         private SqlDataAdapter adapter = new SqlDataAdapter();
         private DataTable dataTable = new DataTable();
+        private int numberForPurchaseInDB;
 
         public ProductCardUser(User user, Product product)
         {
             InitializeComponent();
             this.user = user;
             this.product = product;
-
             addContentOnWindow();
-            var desiredCount = user.basket.FirstOrDefault(pair => pair.Key.nameProfuct.Equals(nameProduct)).Value;
+
+            var desiredCount = user.basket.FirstOrDefault(pair => pair.Key.nameProduct.Equals(nameProduct.Content)).Value;
             countForPurchaseTextBox.Text = desiredCount.ToString();
+
+            updateNumberForPurchaseInDB();
+            Closing += ProductCardUser_Closing;
+        }
+
+        private void ProductCardUser_Closing(object sender, CancelEventArgs e)
+        {
+            // update DB after close window
+            dataBase.openConnection();
+            int currentCount = int.Parse(countForPurchaseTextBox.Text);
+            String query = $"update product set numberForPurchase=@count where product.name=@name";
+            SqlCommand command = new SqlCommand(query, dataBase.getConnection());
+            command.Parameters.AddWithValue("@count", numberForPurchaseInDB - currentCount);
+            command.Parameters.AddWithValue("@name", product.nameProduct);
+            command.ExecuteNonQuery();
+            dataBase.closeConnection();
         }
 
         private void addContentOnWindow()
         {
             typeProduct.Content = product.typeProduct;
-            nameProduct.Content = product.nameProfuct;
+            nameProduct.Content = product.nameProduct;
             TextRange textRange = new TextRange(descriptionProduct.Document.ContentStart, descriptionProduct.Document.ContentEnd);
             textRange.Text = product.descriptionProfuct;
             costProduct.Content = product.costProduct;
             numberForPurchase.Content = product.numberForPurchase;
         }
 
+        private void updateNumberForPurchaseInDB()
+        {
+            dataBase.openConnection();
+            String query = $"select numberForPurchase from product where name=@nameProduct";
+            SqlCommand command = new SqlCommand(query, dataBase.getConnection());
+            command.Parameters.AddWithValue("@nameProduct", product.nameProduct);
+            adapter.SelectCommand = command;
+            adapter.Fill(dataTable);
+            numberForPurchaseInDB = int.Parse(dataTable.Rows[0]["numberForPurchase"].ToString());
+            dataBase.closeConnection();
+        }
+
         private void plusButton_Click(object sender, RoutedEventArgs e)
         {
             int currentCount = int.Parse(countForPurchaseTextBox.Text);
-
-            dataBase.openConnection();
-
-            String query = $"select numberForPurchase from product where name=@nameProduct";
-            SqlCommand command = new SqlCommand(query, dataBase.getConnection());
-            command.Parameters.AddWithValue("@nameProduct", product.nameProfuct);
-            adapter.SelectCommand = command;
-            adapter.Fill(dataTable);
-            int numberForPurchaseInDB = int.Parse(dataTable.Rows[0]["numberForPurchase"].ToString());
 
             if (numberForPurchaseInDB < currentCount + 1)
             {
@@ -70,15 +91,28 @@ namespace Kurs
 
             countForPurchaseTextBox.Text = (currentCount + 1).ToString();
 
-            query = $"update product set numberForPurchase=@count where product.name=@name";
-            command = new SqlCommand(query, dataBase.getConnection());
-            command.Parameters.AddWithValue("@count", numberForPurchaseInDB - 1);
-            command.Parameters.AddWithValue("@name", product.nameProfuct);
-            command.ExecuteNonQuery();
-
             user.addProductToBasket(product);
+            product.numberForPurchase--;
 
-            dataBase.closeConnection();
+            numberForPurchase.Content = (product.numberForPurchase).ToString();
+        }
+
+        private void minusButton_Click(object sender, RoutedEventArgs e)
+        {
+            int currentCount = int.Parse(countForPurchaseTextBox.Text);
+
+            if (currentCount - 1 < 0)
+            {
+                MessageBox.Show("Выбрать отрицательное количество товаров нельзя");
+                return;
+            }
+
+            countForPurchaseTextBox.Text = (currentCount - 1).ToString();
+
+            user.removeProductFromBasket(product);
+            product.numberForPurchase++;
+
+            numberForPurchase.Content = (product.numberForPurchase).ToString();
         }
     }
 }

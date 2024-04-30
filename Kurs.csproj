@@ -73,6 +73,7 @@
     </ApplicationDefinition>
     <Compile Include="enums\TypeUser.cs" />
     <Compile Include="model\Admin.cs" />
+    <Compile Include="model\DesiredProduct.cs" />
     <Compile Include="model\Product.cs" />
     <Compile Include="enums\TypeProduct.cs" />
     <Compile Include="model\User.cs" />

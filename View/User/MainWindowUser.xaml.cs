@@ -17,6 +17,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml.Linq;
 using Kurs.View.user;
+using System.ComponentModel;
 
 namespace Kurs
 {
@@ -33,6 +34,39 @@ namespace Kurs
             this.user = user;
             InitializeComponent();
             initDataGrid();
+            Closing += MainWindowUser_Closing;
+        }
+
+        private void MainWindowUser_Closing(object sender, CancelEventArgs e)
+        {
+            MessageBoxResult result = MessageBox.Show("Вы уверены, что хотите закрыть приложение?\nВаш заказ пропадет", "Подтверждение", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+            if (result == MessageBoxResult.Cancel)
+            {
+                e.Cancel = true; // Отменяем закрытие окна
+            }
+            else
+            {
+                // Возвращаем в БД некупленный товар
+                dataBase.openConnection();
+                SqlDataAdapter adapter = new SqlDataAdapter();
+                DataTable dataTable = new DataTable();
+                Dictionary<Product, int> dict = user.basket;
+                foreach (var el in dict)
+                {
+                    if (el.Value > 0)
+                    {
+                        String firstQuery = $"Select numberForPurchase from product where name='{el.Key.nameProduct}'";
+                        SqlCommand sqlCommand = new SqlCommand(firstQuery, dataBase.getConnection());
+                        adapter.SelectCommand = sqlCommand;
+                        adapter.Fill(dataTable);
+                        int numberForPurchase = int.Parse(dataTable.Rows[0]["numberForPurchase"].ToString());
+
+                        String secondQuery = $"Update product set numberForPurchase={numberForPurchase + el.Value} where name='{el.Key.nameProduct}'";
+                        sqlCommand = new SqlCommand(secondQuery, dataBase.getConnection());
+                        sqlCommand.ExecuteNonQuery();
+                    }
+                }
+            }
         }
 
         private void initDataGrid()
@@ -79,24 +113,25 @@ namespace Kurs
 
         private void mainDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //todo refactor 
             if (sender is DataGrid dataGrid && dataGrid.SelectedItem != null)
             {
                 Product item = (Product)dataGrid.SelectedItem;
 
-                Product currentProduct = getCurrentProduct(products, item.nameProfuct);
+                Product currentProduct = getCurrentProduct(products, item.nameProduct);
 
                 ProductCardUser productCard = new ProductCardUser(user, currentProduct);
                 productCard.ShowDialog();
 
+                mainDataGrid.Items.Refresh();
             }
         }
+
 
         private Product getCurrentProduct(List<Product> products, String name)
         {
             foreach (Product product in products)
             {
-                if (product.nameProfuct.Equals(name))
+                if (product.nameProduct.Equals(name))
                 {
                     return product;
                 }
@@ -108,6 +143,7 @@ namespace Kurs
         {
             BasketWindow basketWin = new BasketWindow(user);
             basketWin.ShowDialog();
+            mainDataGrid.Items.Refresh();
         }
     }
 }

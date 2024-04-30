@@ -21,12 +21,31 @@ namespace Kurs.View.user
     public partial class BasketWindow : Window
     {
         private User user;
+        private List<DesiredProduct> availableProducts;
+
         public BasketWindow(User user)
         {
             InitializeComponent();
             this.user = user;
 
             userLabel.Content += user.login;
+
+            showBasketUser();
+        }
+
+        private void showBasketUser()
+        {
+            availableProducts = user.basket.Select(product => 
+                new DesiredProduct(
+                    product.Key.typeProduct,
+                    product.Key.nameProduct,
+                    product.Key.descriptionProfuct,
+                    product.Key.costProduct,
+                    product.Key.numberForPurchase,
+                    product.Value)
+                ).ToList();
+
+            mainDataGrid.ItemsSource = availableProducts;
         }
     }
 }

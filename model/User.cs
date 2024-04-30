@@ -29,5 +29,17 @@ namespace Kurs.model
                 basket.Add(product, 1);
             }
         }
+
+        public void removeProductFromBasket(Product product)
+        {
+            if (basket.ContainsKey(product) && basket[product] > 0)
+            {
+                basket[product] -= 1;
+            }
+            else
+            {
+                basket.Remove(product);
+            }
+        }
     }
 }

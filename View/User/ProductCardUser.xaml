@@ -27,7 +27,7 @@
         <TextBox x:Name="countForPurchaseTextBox" HorizontalAlignment="Left" Margin="620,74,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="48" IsReadOnly="True" Height="26" BorderBrush="Black" TextAlignment="Center"/>
         <TextBlock HorizontalAlignment="Left" Margin="572,29,0,0" TextWrapping="Wrap" Text="Обновить количество товара в корзине" VerticalAlignment="Top" Width="143" TextAlignment="Center"/>
         <Button x:Name="plusButton" Content="+" HorizontalAlignment="Left" Margin="689,74,0,0" VerticalAlignment="Top" Height="26" Width="26" FontWeight="Bold" BorderBrush="Black" Foreground="Black" Background="White" Click="plusButton_Click"/>
-        <Button x:Name="minusButton" Content="-" HorizontalAlignment="Left" Margin="572,74,0,0" VerticalAlignment="Top" Height="26" Width="26" FontWeight="Bold" Background="White" BorderBrush="Black"/>
+        <Button x:Name="minusButton" Content="-" HorizontalAlignment="Left" Margin="572,74,0,0" VerticalAlignment="Top" Height="26" Width="26" FontWeight="Bold" Background="White" BorderBrush="Black" Click="minusButton_Click"/>
 
     </Grid>
 </Window>
