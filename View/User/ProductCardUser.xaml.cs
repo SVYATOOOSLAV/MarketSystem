@@ -29,6 +29,7 @@ namespace Kurs
         private SqlDataAdapter adapter = new SqlDataAdapter();
         private DataTable dataTable = new DataTable();
         private int numberForPurchaseInDB;
+        private int stateAfterSelectProduct;
 
         public ProductCardUser(User user, Product product)
         {
@@ -37,8 +38,9 @@ namespace Kurs
             this.product = product;
             addContentOnWindow();
 
-            var desiredCount = user.basket.FirstOrDefault(pair => pair.Key.nameProduct.Equals(nameProduct.Content)).Value;
+            var desiredCount = user.basket.FirstOrDefault(pair => pair.Key.nameProduct.Equals(product.nameProduct)).Value;
             countForPurchaseTextBox.Text = desiredCount.ToString();
+            stateAfterSelectProduct = desiredCount;
 
             updateNumberForPurchaseInDB();
             Closing += ProductCardUser_Closing;
@@ -51,7 +53,20 @@ namespace Kurs
             int currentCount = int.Parse(countForPurchaseTextBox.Text);
             String query = $"update product set numberForPurchase=@count where product.name=@name";
             SqlCommand command = new SqlCommand(query, dataBase.getConnection());
-            command.Parameters.AddWithValue("@count", numberForPurchaseInDB - currentCount);
+
+            if (stateAfterSelectProduct > 0 && stateAfterSelectProduct < currentCount)
+            {
+                command.Parameters.AddWithValue("@count", numberForPurchaseInDB + stateAfterSelectProduct - currentCount);
+            }
+            else if (stateAfterSelectProduct < currentCount)
+            {
+                command.Parameters.AddWithValue("@count", numberForPurchaseInDB - currentCount);
+            }
+            else
+            {
+                command.Parameters.AddWithValue("@count", numberForPurchaseInDB + stateAfterSelectProduct - currentCount);
+            }
+
             command.Parameters.AddWithValue("@name", product.nameProduct);
             command.ExecuteNonQuery();
             dataBase.closeConnection();

@@ -32,7 +32,7 @@ namespace Kurs.model
 
         public void removeProductFromBasket(Product product)
         {
-            if (basket.ContainsKey(product) && basket[product] > 0)
+            if (basket.ContainsKey(product) && basket[product] > 1)
             {
                 basket[product] -= 1;
             }

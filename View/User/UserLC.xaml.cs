@@ -44,7 +44,7 @@ namespace Kurs
             SqlDataAdapter adapter = new SqlDataAdapter();  
             DataTable dataTable = new DataTable();  
 
-            String query = "update user_info set budget=@budget where id_user in (Select id_user from user_auth where login_user=@login)";
+            String query = "update user_info set budget=@budget where login_user=@login";
 
             SqlCommand command = new SqlCommand(query, dataBase.getConnection());
             command.Parameters.AddWithValue("@budget", user.budget + double.Parse(moneyTextBox.Text));
@@ -53,7 +53,7 @@ namespace Kurs
 
             MessageBox.Show("Успешное поплнение средств", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
             
-            String query2 = "select budget from user_info where id_user in (Select id_user from user_auth where login_user=@login)";
+            String query2 = "select budget from user_info where login_user=@login";
             command = new SqlCommand(query2, dataBase.getConnection());
             command.Parameters.AddWithValue("@login", loginTextBox.Text);
             adapter.SelectCommand = command;

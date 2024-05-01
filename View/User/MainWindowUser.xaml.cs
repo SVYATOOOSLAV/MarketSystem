@@ -28,7 +28,8 @@ namespace Kurs
     {
         private User user;
         private DataBase dataBase = new DataBase();
-        List<Product> products;
+        private List<Product> products;
+
         public MainWindowUser(User user)
         {
             this.user = user;
@@ -37,6 +38,7 @@ namespace Kurs
             Closing += MainWindowUser_Closing;
         }
 
+        // Закрытие окна приложения
         private void MainWindowUser_Closing(object sender, CancelEventArgs e)
         {
             MessageBoxResult result = MessageBox.Show("Вы уверены, что хотите закрыть приложение?\nВаш заказ пропадет", "Подтверждение", MessageBoxButton.OKCancel, MessageBoxImage.Question);
@@ -66,6 +68,7 @@ namespace Kurs
                         sqlCommand.ExecuteNonQuery();
                     }
                 }
+                dataBase.closeConnection();
             }
         }
 
@@ -105,19 +108,22 @@ namespace Kurs
             return products;
         }
 
+        // Открытие личного кабинета пользователя
         private void userInfoButton_Click(object sender, RoutedEventArgs e)
         {
             UserLC userLC = new UserLC(user, this);
             userLC.ShowDialog();
         }
 
+        // Выбор конкретного продукта
         private void mainDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (sender is DataGrid dataGrid && dataGrid.SelectedItem != null)
             {
                 Product item = (Product)dataGrid.SelectedItem;
 
-                Product currentProduct = getCurrentProduct(products, item.nameProduct);
+                Product currentProduct = products.FirstOrDefault(product => product.nameProduct.Equals(item.nameProduct))
+                    ?? throw new ArgumentException("Продукт не был найден");
 
                 ProductCardUser productCard = new ProductCardUser(user, currentProduct);
                 productCard.ShowDialog();
@@ -126,19 +132,7 @@ namespace Kurs
             }
         }
 
-
-        private Product getCurrentProduct(List<Product> products, String name)
-        {
-            foreach (Product product in products)
-            {
-                if (product.nameProduct.Equals(name))
-                {
-                    return product;
-                }
-            }
-            throw new KeyNotFoundException("Продукт не был найден");
-        }
-
+        // Открытие корзины пользователя
         private void BasketButton_Click(object sender, RoutedEventArgs e)
         {
             BasketWindow basketWin = new BasketWindow(user);
