@@ -124,6 +124,9 @@ namespace Kurs.View.user
                 ResultPriceValue.Text = " руб.";
 
                 mainDataGrid.ItemsSource = null;
+                user.basket.Clear();
+
+                MessageBox.Show("Поздравляем с приобретением, заходите еще!","Поздравление",MessageBoxButton.OK,MessageBoxImage.Asterisk);
             }
         }
     }

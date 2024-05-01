@@ -10,7 +10,7 @@
         <TextBox x:Name="loginTextBox" HorizontalAlignment="Left" Margin="114,102,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="138" Height="26" FontSize="14" />
         <Button Content="Войти" HorizontalAlignment="Left" Margin="114,201,0,0" VerticalAlignment="Top" Height="21" Width="138" FontSize="14" Click="Button_Click"/>
         <PasswordBox x:Name="passwordTextBox" HorizontalAlignment="Left" Margin="114,156,0,0" VerticalAlignment="Top" Width="138" Height="22"/>
-        <Label Content="Авторизация" HorizontalAlignment="Left" Margin="96,15,0,0" VerticalAlignment="Top" Height="46" Width="176" HorizontalContentAlignment="Center" Foreground="#FF720101" FontFamily="Segoe UI Historic" FontSize="24" RenderTransformOrigin="0.5,0.5">
+        <Label Content="Авторизация" HorizontalAlignment="Left" Margin="96,15,0,0" VerticalAlignment="Top" Height="46" Width="176" HorizontalContentAlignment="Center" Foreground="Black" FontFamily="Segoe UI Historic" FontSize="24" RenderTransformOrigin="0.5,0.5">
             <Label.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>

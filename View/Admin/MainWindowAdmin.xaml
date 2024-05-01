@@ -5,8 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kurs.View.Admin"
         mc:Ignorable="d"
-        Title="MainWindowAdmin" Height="450" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="MainWindowAdmin" Height="450" Width="662" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
-        
+        <DataGrid  x:Name ="mainDataGrid" Background="Transparent" Foreground ="Black"  AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="True"  HorizontalAlignment="Left" Width="444" Height="414" VerticalAlignment="Center" BorderBrush="Black" Margin="10,0,0,0" MouseDoubleClick="mainDataGrid_MouseDoubleClick" CanUserReorderColumns="False" CanUserResizeColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header ="Тип продукта" Binding="{Binding typeProduct}" IsReadOnly="True"  Width="100" CanUserSort="True"/>
+                <DataGridTextColumn Header="Наименование продукта" Binding="{Binding nameProduct}" IsReadOnly="True" Width="150" CanUserSort="True"/>
+                <DataGridTextColumn Header="Цена (руб)" Binding="{Binding costProduct}" IsReadOnly="True" Width="80" CanUserSort="True"/>
+                <DataGridTextColumn Header="В наличии (штук)" Binding="{Binding numberForPurchase}" IsReadOnly="True" Width="110"  CanUserSort="True"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
     </Grid>
 </Window>
