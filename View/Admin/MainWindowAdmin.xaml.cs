@@ -81,11 +81,31 @@ namespace Kurs.View.Admin
                 Product currentProduct = products.FirstOrDefault(product => product.nameProduct.Equals(item.nameProduct))
                     ?? throw new ArgumentException("Продукт не был найден");
 
-                ProductCardAdmin productCard = new ProductCardAdmin(admin, currentProduct);
+                ProductCardAdmin productCard = new ProductCardAdmin(currentProduct);
                 productCard.ShowDialog();
 
                 mainDataGrid.Items.Refresh();
             }
+        }
+
+        private void createItemButton_Click(object sender, RoutedEventArgs e)
+        {
+            CreateProductWindow window = new CreateProductWindow(products);
+            window.ShowDialog();
+            mainDataGrid.Items.Refresh(); 
+        }
+
+        private void logOutButton_Click(object sender, RoutedEventArgs e)
+        {
+            Authorization authorization = new Authorization();
+            this.Close();
+            authorization.ShowDialog();
+        }
+
+        private void orderButton_Click(object sender, RoutedEventArgs e)
+        {
+            OrderWindow orderWindow = new OrderWindow(admin);
+            orderWindow.ShowDialog(); 
         }
     }
 }

@@ -5,26 +5,26 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kurs.View.admin"
         mc:Ignorable="d"
-        Title="ProductCardAdmin" Height="356" Width="614">
+        Title="ProductCardAdmin" Height="348" Width="488" ResizeMode="NoResize">
     <Grid>
-        <Label Content="Тип товара" HorizontalAlignment="Left" Margin="56,48,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="typeProduct" Content="Тип" HorizontalAlignment="Left" Margin="230,48,0,0" VerticalAlignment="Top"/>
-        <Label Content="Наименование" HorizontalAlignment="Left" Margin="56,79,0,0" VerticalAlignment="Top"/>
-        <Label Content="Описание товара" HorizontalAlignment="Left" Margin="56,112,0,0" VerticalAlignment="Top"/>
+        <Label Content="Тип товара" HorizontalAlignment="Left" Margin="29,14,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="typeProduct" Content="Тип" HorizontalAlignment="Left" Margin="203,14,0,0" VerticalAlignment="Top"/>
+        <Label Content="Наименование" HorizontalAlignment="Left" Margin="29,45,0,0" VerticalAlignment="Top"/>
+        <Label Content="Описание товара" HorizontalAlignment="Left" Margin="29,78,0,0" VerticalAlignment="Top"/>
 
-        <Label Content="Цена (в руб.)" HorizontalAlignment="Left" Margin="63,216,0,0" VerticalAlignment="Top"/>
-        <Label Content="В наличии (штук)" HorizontalAlignment="Left" Margin="63,247,0,0" VerticalAlignment="Top"/>
-        <RichTextBox x:Name="descriptionProduct" Margin="235,125,155,125">
+        <Label Content="Цена (в руб.)" HorizontalAlignment="Left" Margin="36,192,0,0" VerticalAlignment="Top"/>
+        <Label Content="В наличии (штук)" HorizontalAlignment="Left" Margin="36,223,0,0" VerticalAlignment="Top"/>
+        <RichTextBox x:Name="descriptionProduct" Margin="208,91,54,156">
             <FlowDocument>
                 <Paragraph>
                     <Run Text=""/>
                 </Paragraph>
             </FlowDocument>
         </RichTextBox>
-        <TextBox Name="nameProductTextBox" HorizontalAlignment="Left" Margin="235,83,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <TextBox Name="priceProductTextBox" HorizontalAlignment="Left" Margin="235,220,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <TextBox Name="numberForPurchaseTextBox" HorizontalAlignment="Left" Margin="235,251,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="60"/>
-        <Button x:Name="SaveButton" Content="Сохранить" HorizontalAlignment="Left" Margin="235,289,0,0" VerticalAlignment="Top" Width="87" Click="SaveButton_Click"/>
+        <TextBox Name="nameProductTextBox" HorizontalAlignment="Left" Margin="208,49,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="224"/>
+        <TextBox Name="priceProductTextBox" HorizontalAlignment="Left" Margin="208,196,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="224"/>
+        <TextBox Name="numberForPurchaseTextBox" HorizontalAlignment="Left" Margin="208,227,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="224"/>
+        <Button x:Name="SaveButton" Content="Сохранить" HorizontalAlignment="Left" Margin="211,266,0,0" VerticalAlignment="Top" Width="224" Click="SaveButton_Click"/>
 
     </Grid>
 </Window>

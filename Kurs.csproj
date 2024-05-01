@@ -74,17 +74,24 @@
     <Compile Include="enums\TypeUser.cs" />
     <Compile Include="model\Admin.cs" />
     <Compile Include="model\DesiredProduct.cs" />
+    <Compile Include="model\Order.cs" />
     <Compile Include="model\Product.cs" />
     <Compile Include="enums\TypeProduct.cs" />
     <Compile Include="model\User.cs" />
     <Compile Include="View\admin\AuthorizationAdmin.xaml.cs">
       <DependentUpon>AuthorizationAdmin.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\admin\CreateProductWindow.xaml.cs">
+      <DependentUpon>CreateProductWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\admin\MainWindowAdmin.xaml.cs">
       <DependentUpon>MainWindowAdmin.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\admin\ProductCardAdmin.xaml.cs">
       <DependentUpon>ProductCardAdmin.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\OrderWindow.xaml.cs">
+      <DependentUpon>OrderWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\user\BasketWindow.xaml.cs">
       <DependentUpon>BasketWindow.xaml</DependentUpon>
@@ -102,6 +109,10 @@
       <DependentUpon>UserLC.xaml</DependentUpon>
     </Compile>
     <Page Include="View\admin\AuthorizationAdmin.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\admin\CreateProductWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -126,6 +137,10 @@
       <DependentUpon>Authorization.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\OrderWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\user\BasketWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -187,7 +202,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="service\" />
-    <Folder Include="View\user\images\" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\basket.png" />

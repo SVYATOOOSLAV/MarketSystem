@@ -1,0 +1,42 @@
+﻿<Window x:Class="Kurs.View.admin.CreateProductWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Kurs.View.admin"
+        mc:Ignorable="d"
+        Title="CreateProductWindow" Height="428" Width="571">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Label Content="Тип товара" HorizontalAlignment="Left" Margin="56,48,0,0" VerticalAlignment="Top"/>
+        <Label Content="Наименование" HorizontalAlignment="Left" Margin="56,79,0,0" VerticalAlignment="Top"/>
+        <Label Content="Описание товара" HorizontalAlignment="Left" Margin="56,112,0,0" VerticalAlignment="Top"/>
+
+        <Label Content="Цена (в руб.)" HorizontalAlignment="Left" Margin="68,253,0,0" VerticalAlignment="Top"/>
+        <Label Content="В наличии (штук)" HorizontalAlignment="Left" Margin="63,292,0,0" VerticalAlignment="Top"/>
+        <RichTextBox x:Name="descriptionProduct" Margin="235,125,46,172" HorizontalAlignment="Center">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text=""/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <TextBox x:Name="nameProductTextBox" HorizontalAlignment="Left" Margin="235,83,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="288" Height="22"/>
+        <TextBox x:Name="priceProductTextBox" HorizontalAlignment="Left" Margin="235,257,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="288" Height="22"/>
+        <TextBox x:Name="numberForPurchaseTextBox" HorizontalAlignment="Left" Margin="235,292,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="288" Height="22"/>
+        <Button x:Name="SaveButton" Content="Добавить" HorizontalAlignment="Left" Margin="235,344,0,0" VerticalAlignment="Top" Width="291" Click="SaveButton_Click" Height="30" RenderTransformOrigin="0.5,0.5">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform Angle="-0.293"/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Button.RenderTransform>
+        </Button>
+        <ComboBox x:Name="typeProductBox" HorizontalAlignment="Left" Margin="235,48,0,0" VerticalAlignment="Top" Width="288" Height="24" IsReadOnly="True" />
+
+    </Grid>
+</Window>

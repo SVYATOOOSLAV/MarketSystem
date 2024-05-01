@@ -21,14 +21,12 @@ namespace Kurs.View.admin
     /// </summary>
     public partial class ProductCardAdmin : Window
     {
-        private model.Admin admin;
         private Product product;
         private DataBase dataBase = new DataBase();
 
-        public ProductCardAdmin(model.Admin admin, Product product)
+        public ProductCardAdmin(Product product)
         {
             InitializeComponent();
-            this.admin = admin;
             this.product = product;
             addContentOnWindow();
         }
@@ -68,7 +66,8 @@ namespace Kurs.View.admin
             product.numberForPurchase = int.Parse(numberForPurchaseTextBox.Text);
 
             addContentOnWindow();
-            MessageBox.Show("Данные успешно обновлены");
+
+            MessageBox.Show("Данные успешно обновлены", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

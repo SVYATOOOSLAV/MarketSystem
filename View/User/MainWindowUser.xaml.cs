@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using System.Xml.Linq;
 using Kurs.View.user;
 using System.ComponentModel;
+using Kurs.View;
 
 namespace Kurs
 {
@@ -141,6 +142,12 @@ namespace Kurs
             BasketWindow basketWin = new BasketWindow(user);
             basketWin.ShowDialog();
             mainDataGrid.Items.Refresh();
+        }
+
+        private void orderButton_Click(object sender, RoutedEventArgs e)
+        {
+            OrderWindow orderWindow = new OrderWindow(user);
+            orderWindow.ShowDialog();
         }
     }
 }
