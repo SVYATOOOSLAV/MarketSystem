@@ -15,6 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Kurs.View.admin;
 
 namespace Kurs.View.user
 {
@@ -27,19 +28,27 @@ namespace Kurs.View.user
         private List<DesiredProduct> availableProducts;
         private double resultPrice;
         private DataBase dataBase = new DataBase();
+        private List<Product> products;
 
-        public BasketWindow(User user)
+        public BasketWindow(User user, List<Product> products)
         {
             InitializeComponent();
             this.user = user;
 
             userLabel.Content += user.login;
 
+            updateDataOnWindow();
+
+            this.products = products;
+        }
+
+        private void updateDataOnWindow()
+        {
             showBasketUser();
 
             updateResultPrice();
 
-            budgetUser.Text = user.budget + budgetUser.Text;
+            budgetUser.Text = user.budget + " руб.";
         }
 
         private void showBasketUser()
@@ -59,6 +68,7 @@ namespace Kurs.View.user
 
         private void updateResultPrice()
         {
+            resultPrice = 0;
             foreach (var product in mainDataGrid.Items)
             {
                 DesiredProduct row = product as DesiredProduct;
@@ -68,7 +78,7 @@ namespace Kurs.View.user
                 }
             }
 
-            ResultPriceValue.Text = resultPrice + ResultPriceValue.Text;
+            ResultPriceValue.Text = resultPrice + " руб.";
         }
 
         // Переход в личный кабинет
@@ -127,6 +137,22 @@ namespace Kurs.View.user
                 user.basket.Clear();
 
                 MessageBox.Show("Поздравляем с приобретением, заходите еще!","Поздравление",MessageBoxButton.OK,MessageBoxImage.Asterisk);
+            }
+        }
+
+        private void mainDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is DataGrid dataGrid && dataGrid.SelectedItem != null)
+            {
+                Product item = (Product)dataGrid.SelectedItem;
+
+                Product currentProduct = products.FirstOrDefault(product => product.nameProduct.Equals(item.nameProduct))
+                    ?? throw new ArgumentException("Продукт не был найден");
+
+                ProductCardUser productCard = new ProductCardUser(user, currentProduct);
+                productCard.ShowDialog();
+
+                updateDataOnWindow();
             }
         }
     }

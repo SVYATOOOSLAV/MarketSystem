@@ -139,7 +139,7 @@ namespace Kurs
         // Открытие корзины пользователя
         private void BasketButton_Click(object sender, RoutedEventArgs e)
         {
-            BasketWindow basketWin = new BasketWindow(user);
+            BasketWindow basketWin = new BasketWindow(user, products);
             basketWin.ShowDialog();
             mainDataGrid.Items.Refresh();
         }

@@ -11,7 +11,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Label x:Name="userLabel" Content="Корзина пользователя " HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top"/>
-        <DataGrid  x:Name ="mainDataGrid" Background="Transparent" Foreground ="Black"  AutoGenerateColumns="False" IsReadOnly="True" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="True" HorizontalAlignment="Left" Width="536" Height="257" VerticalAlignment="Top" BorderBrush="Black" Margin="10,56,0,0">
+        <DataGrid  x:Name ="mainDataGrid" Background="Transparent" Foreground ="Black"  AutoGenerateColumns="False" IsReadOnly="True" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" CanUserSortColumns="True" HorizontalAlignment="Left" Width="536" Height="257" VerticalAlignment="Top" BorderBrush="Black" Margin="10,56,0,0" MouseDoubleClick="mainDataGrid_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Header ="Тип продукта" Binding="{Binding Path=typeProduct}" IsReadOnly="True"  Width="100" CanUserSort="True"/>
                 <DataGridTextColumn Header="Наименование продукта" Binding="{Binding Path=nameProduct}" IsReadOnly="True" Width="150" CanUserSort="True"/>

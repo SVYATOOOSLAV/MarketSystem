@@ -6,11 +6,8 @@
         xmlns:local="clr-namespace:Kurs.View"
         mc:Ignorable="d"
         Title="OrderWindow" Height="450" Width="628" ResizeMode="NoResize">
-    <Grid Margin="0,0,10,0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <DataGrid  x:Name ="mainDataGrid" Background="Transparent" Foreground ="Black"  AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="True"  HorizontalAlignment="Left" Width="608" Height="414" VerticalAlignment="Center" BorderBrush="Black" Margin="10,0,0,0"  CanUserReorderColumns="False" CanUserResizeColumns="False" RenderTransformOrigin="0.5,0.5">
+    <Grid>
+        <DataGrid  x:Name ="mainDataGrid" Background="Transparent" Foreground ="Black"  AutoGenerateColumns="False" IsReadOnly="True" CanUserSortColumns="True"  HorizontalAlignment="Left" Width="619" Height="414" VerticalAlignment="Center" BorderBrush="Black" Margin="10,0,0,0"  CanUserReorderColumns="False" CanUserResizeColumns="False" RenderTransformOrigin="0.5,0.5">
             <DataGrid.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>

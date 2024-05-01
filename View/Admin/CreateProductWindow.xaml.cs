@@ -51,7 +51,8 @@ namespace Kurs.View.admin
             String query = $"insert into product(type,name,description,cost,numberForPurchase) values (@type, @name, @description, @cost, @count)";
             SqlCommand command = new SqlCommand(query, dataBase.getConnection());
 
-            command.Parameters.AddWithValue("@type", typeProductBox.SelectedItem);
+            String type = typeProductBox.SelectedItem.ToString();
+            command.Parameters.AddWithValue("@type", type);
             command.Parameters.AddWithValue("@name", nameProductTextBox.Text);
             command.Parameters.AddWithValue("@description", text);
             command.Parameters.AddWithValue("@cost", double.Parse(priceProductTextBox.Text));
@@ -68,7 +69,7 @@ namespace Kurs.View.admin
                 int.Parse(numberForPurchaseTextBox.Text))
             );
 
-            MessageBox.Show("Продукт успещно добавлен", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show("Продукт успешно добавлен", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }
