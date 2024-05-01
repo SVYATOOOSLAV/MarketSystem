@@ -1,7 +1,10 @@
 ﻿using Kurs.model;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -22,6 +25,8 @@ namespace Kurs.View.user
     {
         private User user;
         private List<DesiredProduct> availableProducts;
+        private double resultPrice;
+        private DataBase dataBase = new DataBase();
 
         public BasketWindow(User user)
         {
@@ -31,21 +36,95 @@ namespace Kurs.View.user
             userLabel.Content += user.login;
 
             showBasketUser();
+
+            updateResultPrice();
+
+            budgetUser.Text = user.budget + budgetUser.Text;
         }
 
         private void showBasketUser()
         {
-            availableProducts = user.basket.Select(product => 
+            availableProducts = user.basket.Select(product =>
                 new DesiredProduct(
                     product.Key.typeProduct,
                     product.Key.nameProduct,
-                    product.Key.descriptionProfuct,
+                    product.Key.descriptionProduct,
                     product.Key.costProduct,
                     product.Key.numberForPurchase,
                     product.Value)
                 ).ToList();
 
             mainDataGrid.ItemsSource = availableProducts;
+        }
+
+        private void updateResultPrice()
+        {
+            foreach (var product in mainDataGrid.Items)
+            {
+                DesiredProduct row = product as DesiredProduct;
+                if (row != null)
+                {
+                    resultPrice += row.costProduct * row.desiredCount;
+                }
+            }
+
+            ResultPriceValue.Text = resultPrice + ResultPriceValue.Text;
+        }
+
+        // Переход в личный кабинет
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            UserLC lc = new UserLC(user, this);
+            lc.ShowDialog();
+            budgetUser.Text = user.budget + " руб.";
+        }
+
+        private void PurchaseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (user.budget < resultPrice)
+            {
+                MessageBoxResult result = MessageBox.Show("У вас недостаточно средств, поплните их", "Информирование", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                if (result == MessageBoxResult.OK)
+                {
+                    Button_Click(sender, e);
+                }
+            }
+
+            if (user.budget >= resultPrice)
+            {
+                dataBase.openConnection();
+                SqlCommand command;
+                foreach (var product in mainDataGrid.Items)
+                {
+                    DesiredProduct row = product as DesiredProduct;
+                    if (row != null)
+                    {
+                        String query = $"insert into [order](time_order,login_user,name_product,count_purchase) values(@time, @login, @name_product, @count)";
+
+                        command = new SqlCommand(query, dataBase.getConnection());
+                        command.Parameters.AddWithValue("@time", DateTime.Now);
+                        command.Parameters.AddWithValue("@login", user.login);
+                        command.Parameters.AddWithValue("@name_product", row.nameProduct);
+                        command.Parameters.AddWithValue("@count", row.desiredCount);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                
+                user.budget -= resultPrice;
+
+                String queryUpdateBudget = $"update user_info set budget=@budget where login_user=@login";
+                command = new SqlCommand(queryUpdateBudget, dataBase.getConnection());
+                command.Parameters.AddWithValue("@budget", user.budget);
+                command.Parameters.AddWithValue("@login", user.login);
+                command.ExecuteNonQuery();
+
+                dataBase.closeConnection();
+
+                budgetUser.Text = user.budget + " руб.";
+                ResultPriceValue.Text = " руб.";
+
+                mainDataGrid.ItemsSource = null;
+            }
         }
     }
 }

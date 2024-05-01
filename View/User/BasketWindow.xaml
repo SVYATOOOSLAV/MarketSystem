@@ -5,10 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kurs.View.user"
         mc:Ignorable="d"
-        Title="Basket" Height="450" Width="800" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-    <Grid>
+        Title="Basket" Height="462" Width="562" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid Margin="0,0,0,-6">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
         <Label x:Name="userLabel" Content="Корзина пользователя " HorizontalAlignment="Left" Margin="10,25,0,0" VerticalAlignment="Top"/>
-        <DataGrid  x:Name ="mainDataGrid" Background="Transparent" Foreground ="Black"  AutoGenerateColumns="False" IsReadOnly="True" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" HorizontalAlignment="Left" Width="536" Height="249" VerticalAlignment="Top" BorderBrush="Black" Margin="10,65,0,0">
+        <DataGrid  x:Name ="mainDataGrid" Background="Transparent" Foreground ="Black"  AutoGenerateColumns="False" IsReadOnly="True" CanUserReorderColumns="False" CanUserResizeColumns="False" CanUserResizeRows="False" HorizontalAlignment="Left" Width="536" Height="257" VerticalAlignment="Top" BorderBrush="Black" Margin="10,56,0,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header ="Тип продукта" Binding="{Binding Path=typeProduct}" IsReadOnly="True"  Width="100" CanUserSort="False"/>
                 <DataGridTextColumn Header="Наименование продукта" Binding="{Binding Path=nameProduct}" IsReadOnly="True" Width="150" CanUserSort="False"/>
@@ -16,5 +19,11 @@
                 <DataGridTextColumn Header="Выбрано пользователем (штук)" Binding="{Binding Path=desiredCount}" IsReadOnly="True" Width="200"  CanUserSort="False"/>
             </DataGrid.Columns>
         </DataGrid>
+        <TextBlock x:Name="ResultPrice" HorizontalAlignment="Left" Margin="10,332,0,0" TextWrapping="Wrap" Text="Итоговая сумма" VerticalAlignment="Top"/>
+        <TextBlock x:Name="ResultPriceValue" HorizontalAlignment="Left" Margin="161,332,0,0" TextWrapping="Wrap" Text=" руб." VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,370,0,0" TextWrapping="Wrap" Text="Сумма на счете" VerticalAlignment="Top"/>
+        <TextBlock x:Name="budgetUser" HorizontalAlignment="Left" Margin="161,370,0,0" TextWrapping="Wrap" Text=" руб." VerticalAlignment="Top"/>
+        <Button Content="Пополнить счет" HorizontalAlignment="Left" Margin="10,402,0,0" VerticalAlignment="Top" Width="177" Click="Button_Click"/>
+        <Button x:Name="PurchaseButton" Content="Оплатить" HorizontalAlignment="Left" Margin="465,332,0,0" VerticalAlignment="Top" Height="31" Width="79" Click="PurchaseButton_Click"/>
     </Grid>
 </Window>

@@ -10,7 +10,7 @@ namespace Kurs.model
     {
         public TypeProduct typeProduct { get; set; }
         public String nameProduct { get; set; }
-        public String descriptionProfuct { get; set; }
+        public String descriptionProduct { get; set; }
         public Double costProduct { get; set; }
         public int numberForPurchase { get; set; }
 
@@ -18,7 +18,7 @@ namespace Kurs.model
         {
             this.typeProduct = typeProduct;
             this.nameProduct = nameProfuct;
-            this.descriptionProfuct = descriptionProfuct;
+            this.descriptionProduct = descriptionProfuct;
             this.costProduct = costProduct;
             this.numberForPurchase = numberForPurchase;
         }
@@ -28,7 +28,7 @@ namespace Kurs.model
             return obj is Product product &&
                    typeProduct == product.typeProduct &&
                    nameProduct == product.nameProduct &&
-                   descriptionProfuct == product.descriptionProfuct &&
+                   descriptionProduct == product.descriptionProduct &&
                    costProduct == product.costProduct;
         }
 
@@ -37,7 +37,7 @@ namespace Kurs.model
             int hashCode = -61797700;
             hashCode = hashCode * -1521134295 + typeProduct.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(nameProduct);
-            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(descriptionProfuct);
+            hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(descriptionProduct);
             hashCode = hashCode * -1521134295 + costProduct.GetHashCode();
             return hashCode;
         }

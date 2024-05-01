@@ -41,34 +41,37 @@ namespace Kurs
         // Закрытие окна приложения
         private void MainWindowUser_Closing(object sender, CancelEventArgs e)
         {
-            MessageBoxResult result = MessageBox.Show("Вы уверены, что хотите закрыть приложение?\nВаш заказ пропадет", "Подтверждение", MessageBoxButton.OKCancel, MessageBoxImage.Question);
-            if (result == MessageBoxResult.Cancel)
+            if(user.basket.Count != 0)
             {
-                e.Cancel = true; // Отменяем закрытие окна
-            }
-            else
-            {
-                // Возвращаем в БД некупленный товар
-                dataBase.openConnection();
-                SqlDataAdapter adapter = new SqlDataAdapter();
-                DataTable dataTable = new DataTable();
-                Dictionary<Product, int> dict = user.basket;
-                foreach (var el in dict)
+                MessageBoxResult result = MessageBox.Show("Вы уверены, что хотите закрыть приложение?\nВаш заказ пропадет", "Подтверждение", MessageBoxButton.OKCancel, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Cancel)
                 {
-                    if (el.Value > 0)
-                    {
-                        String firstQuery = $"Select numberForPurchase from product where name='{el.Key.nameProduct}'";
-                        SqlCommand sqlCommand = new SqlCommand(firstQuery, dataBase.getConnection());
-                        adapter.SelectCommand = sqlCommand;
-                        adapter.Fill(dataTable);
-                        int numberForPurchase = int.Parse(dataTable.Rows[0]["numberForPurchase"].ToString());
-
-                        String secondQuery = $"Update product set numberForPurchase={numberForPurchase + el.Value} where name='{el.Key.nameProduct}'";
-                        sqlCommand = new SqlCommand(secondQuery, dataBase.getConnection());
-                        sqlCommand.ExecuteNonQuery();
-                    }
+                    e.Cancel = true; // Отменяем закрытие окна
                 }
-                dataBase.closeConnection();
+                else
+                {
+                    // Возвращаем в БД некупленный товар
+                    dataBase.openConnection();
+                    SqlDataAdapter adapter = new SqlDataAdapter();
+                    Dictionary<Product, int> dict = user.basket;
+                    foreach (var el in dict)
+                    {
+                        if (el.Value > 0)
+                        {
+                            DataTable dataTable = new DataTable();
+                            String firstQuery = $"Select numberForPurchase from product where name='{el.Key.nameProduct}'";
+                            SqlCommand sqlCommand = new SqlCommand(firstQuery, dataBase.getConnection());
+                            adapter.SelectCommand = sqlCommand;
+                            adapter.Fill(dataTable);
+                            int numberForPurchase = int.Parse(dataTable.Rows[0]["numberForPurchase"].ToString());
+
+                            String secondQuery = $"Update product set numberForPurchase={numberForPurchase + el.Value} where name='{el.Key.nameProduct}'";
+                            sqlCommand = new SqlCommand(secondQuery, dataBase.getConnection());
+                            sqlCommand.ExecuteNonQuery();
+                        }
+                    }
+                    dataBase.closeConnection();
+                }
             }
         }
 

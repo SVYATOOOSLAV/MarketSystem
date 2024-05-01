@@ -23,15 +23,15 @@ namespace Kurs
     public partial class UserLC : Window
     {
         private User user;
-        private MainWindowUser latestMainWindow;
+        private Window latestWindow;
         private DataBase dataBase = new DataBase();
 
-        public UserLC(User user, MainWindowUser mainWindow)
+        public UserLC(User user, Window mainWindow)
         {
             InitializeComponent();
 
             this.user = user;
-            latestMainWindow = mainWindow;
+            latestWindow = mainWindow;
 
             loginTextBox.Text = user.login;
             roleTextBox.Text = "user";
@@ -68,7 +68,7 @@ namespace Kurs
 
         private void exitButton_Click(object sender, RoutedEventArgs e)
         {
-            latestMainWindow.Close();
+            latestWindow.Close();
             Authorization authorization = new Authorization();
             this.Close();
             authorization.ShowDialog();
