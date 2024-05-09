@@ -40,8 +40,8 @@ namespace Kurs.View.admin
         {
             typeProduct.Content = product.typeProduct;
             nameProductTextBox.Text = product.nameProduct;
-            descriptionProduct.Document.Blocks.Clear();
-            descriptionProduct.Document.Blocks.Add(new Paragraph(new Run(product.descriptionProduct)));
+            TextRange textRange = new TextRange(descriptionProduct.Document.ContentStart, descriptionProduct.Document.ContentEnd);
+            textRange.Text = product.descriptionProduct;
             priceProductTextBox.Text = product.costProduct.ToString();
             numberForPurchaseTextBox.Text = product.numberForPurchase.ToString();
         }
