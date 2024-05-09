@@ -25,6 +25,7 @@
         <TextBox Name="priceProductTextBox" HorizontalAlignment="Left" Margin="208,196,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="224"/>
         <TextBox Name="numberForPurchaseTextBox" HorizontalAlignment="Left" Margin="208,227,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="224"/>
         <Button x:Name="SaveButton" Content="Сохранить" HorizontalAlignment="Left" Margin="211,266,0,0" VerticalAlignment="Top" Width="224" Click="SaveButton_Click"/>
+        <Button x:Name="deleteProductButton" Content="Удалить товар" HorizontalAlignment="Left" Margin="36,266,0,0" VerticalAlignment="Top" Width="98" Click="deleteProductButton_Click"/>
 
     </Grid>
 </Window>

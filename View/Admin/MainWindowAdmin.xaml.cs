@@ -81,7 +81,7 @@ namespace Kurs.View.Admin
                 Product currentProduct = products.FirstOrDefault(product => product.nameProduct.Equals(item.nameProduct))
                     ?? throw new ArgumentException("Продукт не был найден");
 
-                ProductCardAdmin productCard = new ProductCardAdmin(currentProduct);
+                ProductCardAdmin productCard = new ProductCardAdmin(currentProduct, products);
                 productCard.ShowDialog();
 
                 mainDataGrid.Items.Refresh();

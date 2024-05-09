@@ -8,15 +8,15 @@
         Title="ProductCard" Height="276" Width="766" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
     <Grid Margin="0,0,0,-6">
         <Label Content="Тип товара" HorizontalAlignment="Left" Margin="20,19,0,0" VerticalAlignment="Top" Height="24" Width="72"/>
-        <Label Name="typeProduct" Content="Тип" HorizontalAlignment="Left" Margin="198,19,0,0" VerticalAlignment="Top" Height="24" Width="30"/>
+        <Label Name="typeProduct" Content="Тип" HorizontalAlignment="Left" Margin="198,19,0,0" VerticalAlignment="Top" Height="24" Width="121"/>
         <Label Content="Наименование" HorizontalAlignment="Left" Margin="20,48,0,0" VerticalAlignment="Top" Height="24" Width="94"/>
         <Label x:Name="nameProduct" Content="Наименование" HorizontalAlignment="Left" Margin="198,48,0,0" VerticalAlignment="Top" Height="24" Width="94"/>
         <Label Content="Описание товара" HorizontalAlignment="Left" Margin="20,79,0,0" VerticalAlignment="Top" Height="24" Width="108"/>
 
         <Label Content="Цена (в руб.)" HorizontalAlignment="Left" Margin="27,176,0,0" VerticalAlignment="Top" Height="24" Width="83"/>
-        <Label x:Name="costProduct" Content="0" HorizontalAlignment="Left" Margin="204,176,0,0" VerticalAlignment="Top" Height="24" Width="17"/>
+        <Label x:Name="costProduct" Content="0" HorizontalAlignment="Left" Margin="204,176,0,0" VerticalAlignment="Top" Height="24" Width="115"/>
         <Label Content="В наличии(штук)" HorizontalAlignment="Left" Margin="27,205,0,0" VerticalAlignment="Top" Height="24" Width="103"/>
-        <Label x:Name="numberForPurchase" Content="0" HorizontalAlignment="Left" Margin="204,205,0,0" VerticalAlignment="Top" Height="24" Width="17"/>
+        <Label x:Name="numberForPurchase" Content="0" HorizontalAlignment="Left" Margin="204,205,0,0" VerticalAlignment="Top" Height="24" Width="115"/>
         <RichTextBox x:Name="descriptionProduct" Margin="202,91,291,105" IsReadOnly="True">
             <FlowDocument>
                 <Paragraph>

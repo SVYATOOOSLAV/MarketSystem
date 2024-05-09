@@ -13,6 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Kurs.View.admin
 {
@@ -22,12 +23,14 @@ namespace Kurs.View.admin
     public partial class ProductCardAdmin : Window
     {
         private Product product;
+        private List<Product> products;
         private DataBase dataBase = new DataBase();
 
-        public ProductCardAdmin(Product product)
+        public ProductCardAdmin(Product product, List<Product> products)
         {
             InitializeComponent();
             this.product = product;
+            this.products = products;
             addContentOnWindow();
         }
 
@@ -68,6 +71,21 @@ namespace Kurs.View.admin
             addContentOnWindow();
 
             MessageBox.Show("Данные успешно обновлены", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void deleteProductButton_Click(object sender, RoutedEventArgs e)
+        {
+            dataBase.openConnection();
+            String query = $"delete product where name=@nameProduct";
+            SqlCommand command = new SqlCommand(query, dataBase.getConnection());
+
+            command.Parameters.AddWithValue("@nameProduct", product.nameProduct);
+            command.ExecuteNonQuery();
+            dataBase.closeConnection();
+
+            products.Remove(product);
+
+            this.Close();
         }
     }
 }

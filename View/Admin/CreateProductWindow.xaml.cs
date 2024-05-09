@@ -48,6 +48,23 @@ namespace Kurs.View.admin
             string text = textRange.Text;
 
             dataBase.openConnection();
+
+            // Проверка наличия товара с таким же именем и типом
+            string queryCheck = "SELECT COUNT(*) FROM product WHERE type = @type AND name = @name";
+            SqlCommand commandCheck = new SqlCommand(queryCheck, dataBase.getConnection());
+            commandCheck.Parameters.AddWithValue("@type", typeProductBox.SelectedItem.ToString());
+            commandCheck.Parameters.AddWithValue("@name", nameProductTextBox.Text);
+
+            int existingProductsCount = (int)commandCheck.ExecuteScalar();
+
+            if (existingProductsCount > 0)
+            {
+                MessageBox.Show("Товар с таким именем и типом уже существует", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                dataBase.closeConnection();
+                return;
+            }
+
+            // Добавление нового товара, если проверка прошла успешно
             String query = $"insert into product(type,name,description,cost,numberForPurchase) values (@type, @name, @description, @cost, @count)";
             SqlCommand command = new SqlCommand(query, dataBase.getConnection());
 
@@ -69,7 +86,7 @@ namespace Kurs.View.admin
                 int.Parse(numberForPurchaseTextBox.Text))
             );
 
-            MessageBox.Show("Продукт успешно добавлен", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+            this.Close();
         }
     }
 }

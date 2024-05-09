@@ -40,19 +40,25 @@ namespace Kurs
 
         private void addMoneyButton_Click(object sender, RoutedEventArgs e)
         {
+            if (!double.TryParse(moneyTextBox.Text, out double amount) || amount <= 0)
+            {
+                MessageBox.Show("Введите положительное число в поле суммы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             dataBase.openConnection();
-            SqlDataAdapter adapter = new SqlDataAdapter();  
-            DataTable dataTable = new DataTable();  
+            SqlDataAdapter adapter = new SqlDataAdapter();
+            DataTable dataTable = new DataTable();
 
             String query = "update user_info set budget=@budget where login_user=@login";
 
             SqlCommand command = new SqlCommand(query, dataBase.getConnection());
-            command.Parameters.AddWithValue("@budget", user.budget + double.Parse(moneyTextBox.Text));
+            command.Parameters.AddWithValue("@budget", user.budget + amount);
             command.Parameters.AddWithValue("@login", loginTextBox.Text);
             command.ExecuteNonQuery();
 
-            MessageBox.Show("Успешное поплнение средств", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-            
+            MessageBox.Show("Успешное пополнение средств", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+
             String query2 = "select budget from user_info where login_user=@login";
             command = new SqlCommand(query2, dataBase.getConnection());
             command.Parameters.AddWithValue("@login", loginTextBox.Text);
@@ -63,8 +69,10 @@ namespace Kurs
             budgetTextBox.Text = row["budget"].ToString();
             user.budget = Double.Parse(row["budget"].ToString());
             moneyTextBox.Clear();
+
+            dataBase.closeConnection();
         }
-          
+
 
         private void exitButton_Click(object sender, RoutedEventArgs e)
         {

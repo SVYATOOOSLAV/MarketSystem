@@ -33,7 +33,14 @@ namespace Kurs
             String login = loginTextBox.Text;
             String password = passwordTextBox.Text;
 
-            if (isUserExist())
+            if(login.Trim() == "" || password.Trim() == "")
+            {
+                MessageBox.Show("Невозможно создать пользователя","Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            // Проверка введенных данных
+            if (!ValidateRegistration(login, password))
             {
                 return;
             }
@@ -58,10 +65,8 @@ namespace Kurs
             dataBase.closeConnection();
         }
 
-        private Boolean isUserExist()
+        private Boolean isUserExist(String login)
         {
-            String login = loginTextBox.Text;
-
             SqlDataAdapter adapter = new SqlDataAdapter();
             DataTable dataTable = new DataTable();
 
@@ -78,6 +83,45 @@ namespace Kurs
                 return true;
             }
             return false;
+        }
+
+        private bool ValidateRegistration(string login, string password)
+        {
+            // Проверка наличия логина и пароля
+            if (string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(password))
+            {
+                MessageBox.Show("Введите логин и пароль", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            // Проверка длины логина и пароля
+            if (login.Length < 4 || password.Length < 6)
+            {
+                MessageBox.Show("Логин должен содержать не менее 4 символов, а пароль - не менее 6 символов", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            // Проверка на наличие специальных символов в логине
+            if (login.Any(char.IsPunctuation))
+            {
+                MessageBox.Show("Логин не должен содержать специальные символы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            // Проверка на наличие специальных символов в пароле
+            if (password.Any(char.IsPunctuation))
+            {
+                MessageBox.Show("Пароль не должен содержать специальные символы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            // Проверка уникальности логина
+            if (isUserExist(login))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
