@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Data;
+using Kurs.DataBase;
 
 namespace Kurs
 {
@@ -21,68 +22,72 @@ namespace Kurs
     /// </summary>
     public partial class Sign_Up : Window
     {
+        private readonly DatabaseManager databaseManager;
+
         public Sign_Up()
         {
             InitializeComponent();
+            String dataBaseConn = @"Data Source=SVYATBOOK;Initial Catalog=kurs;Integrated Security=True";
+            databaseManager = new DatabaseManager(dataBaseConn);
         }
-        DataBase dataBase = new DataBase();
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            dataBase.openConnection();
+            string login = loginTextBox.Text;
+            string password = passwordTextBox.Text;
 
-            String login = loginTextBox.Text;
-            String password = passwordTextBox.Text;
-
-            if(login.Trim() == "" || password.Trim() == "")
-            {
-                MessageBox.Show("Невозможно создать пользователя","Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            // Проверка введенных данных
             if (!ValidateRegistration(login, password))
             {
                 return;
             }
 
-            String query = $"insert into user_auth(login_user, password_user) values('{login}','{password}')";
-            SqlCommand command = new SqlCommand(query, dataBase.getConnection());
-
-            if (command.ExecuteNonQuery() == 1)
+            if (CreateUser(login, password))
             {
                 MessageBox.Show("Аккаунт создан", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-                this.Close();
+                Close();
             }
             else
             {
-                MessageBox.Show("Аккаунт не создан");
+                MessageBox.Show("Аккаунт не создан", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
-            query = $"insert into user_info(login_user,budget) values('{login}',0)";
-            command = new SqlCommand(query, dataBase.getConnection());
-            command.ExecuteNonQuery();
-
-            dataBase.closeConnection();
         }
 
-        private Boolean isUserExist(String login)
+        private bool CreateUser(string login, string password)
         {
-            SqlDataAdapter adapter = new SqlDataAdapter();
-            DataTable dataTable = new DataTable();
-
-            String query = $"select * from user_auth where login_user='{login}'";
-            SqlCommand command = new SqlCommand(query, dataBase.getConnection());
-
-            adapter.SelectCommand = command;
-            adapter.Fill(dataTable);
-
-
-            if (dataTable.Rows.Count > 0)
+            try
             {
-                MessageBox.Show("Аккаунт уже существует", "Ошибка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                databaseManager.openConnection();
+
+                string queryAuth = "INSERT INTO user_auth (login_user, password_user) VALUES (@login, @password)";
+                
+                SqlParameter[] parametersAuth =
+                {
+                new SqlParameter("@login", SqlDbType.VarChar) {Value = login},
+                new SqlParameter("@password", SqlDbType.VarChar) {Value = password}
+                };
+
+                databaseManager.ExecuteQuery(queryAuth, parametersAuth);
+
+                string queryInfo = "INSERT INTO user_info (login_user, budget) VALUES (@login, 0)";
+               
+                SqlParameter[] parametersInfo =
+                {
+                new SqlParameter("@login", SqlDbType.VarChar) {Value = login}
+                };
+               
+                databaseManager.ExecuteQuery(queryInfo, parametersInfo);
+
                 return true;
             }
-            return false;
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при создании аккаунта: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            finally
+            {
+                databaseManager.closeConnection();
+            }
         }
 
         private bool ValidateRegistration(string login, string password)
@@ -122,6 +127,23 @@ namespace Kurs
             }
 
             return true;
+        }
+
+        private bool isUserExist(string login)
+        {
+            string query = "SELECT COUNT(*) FROM user_auth WHERE login_user = @login";
+            SqlParameter parameter = new SqlParameter("@login", SqlDbType.VarChar) { Value = login };
+
+            DataTable dataTable = databaseManager.ExecuteQuery(query, new[] { parameter });
+            int userCount = Convert.ToInt32(dataTable.Rows[0][0]);
+
+            if (userCount > 0)
+            {
+                MessageBox.Show("Аккаунт уже существует", "Ошибка", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                return true;
+            }
+
+            return false;
         }
     }
 }

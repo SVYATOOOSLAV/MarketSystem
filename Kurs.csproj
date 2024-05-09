@@ -71,6 +71,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DataBase\DataBaseManager.cs" />
     <Compile Include="enums\TypeUser.cs" />
     <Compile Include="model\Admin.cs" />
     <Compile Include="model\DesiredProduct.cs" />
