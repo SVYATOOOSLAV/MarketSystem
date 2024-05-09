@@ -34,7 +34,7 @@ namespace Kurs
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             string login = loginTextBox.Text;
-            string password = passwordTextBox.Text;
+            string password = passwordTextBox.Password;
 
             if (!ValidateRegistration(login, password))
             {

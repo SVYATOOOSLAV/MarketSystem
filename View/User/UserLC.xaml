@@ -5,21 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kurs"
         mc:Ignorable="d"
-        Title="Личный кабинет пользователя" Height="271" Width="336" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="Личный кабинет пользователя" Height="225" Width="299" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Label Content="Логин" HorizontalAlignment="Left" Margin="31,51,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="loginTextBox" HorizontalAlignment="Left" Margin="183,51,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
-        <Label Content="Роль" HorizontalAlignment="Left" Margin="31,87,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="roleTextBox" HorizontalAlignment="Left" Margin="183,87,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.517,2.627" IsReadOnly="True"/>
-        <Label Content="Баланс" HorizontalAlignment="Left" Margin="31,127,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="budgetTextBox" HorizontalAlignment="Left" Margin="183,135,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.517,2.627" IsReadOnly="True"/>
-        <Label Content="Пополнить на сумму" HorizontalAlignment="Left" Margin="31,165,0,0" VerticalAlignment="Top" Width="136"/>
-        <TextBox x:Name="moneyTextBox" HorizontalAlignment="Left" Margin="183,169,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.517,2.627"/>
-        <Button x:Name="addMoneyButton" Content="Пополнить" HorizontalAlignment="Left" Margin="225,204,0,0" VerticalAlignment="Top" Width="78" Click="addMoneyButton_Click"/>
-        <Button x:Name="exitButton" Content="Выйти из системы" HorizontalAlignment="Left" Margin="183,10,0,0" VerticalAlignment="Top" Width="120" Click="exitButton_Click" />
+        <Label Content="Логин" HorizontalAlignment="Left" Margin="8,9,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="loginTextBox" HorizontalAlignment="Left" Margin="160,9,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" IsReadOnly="True"/>
+        <Label Content="Роль" HorizontalAlignment="Left" Margin="8,45,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="roleTextBox" HorizontalAlignment="Left" Margin="160,45,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.517,2.627" IsReadOnly="True"/>
+        <Label Content="Баланс" HorizontalAlignment="Left" Margin="8,85,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="budgetTextBox" HorizontalAlignment="Left" Margin="160,93,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.517,2.627" IsReadOnly="True"/>
+        <Label Content="Пополнить на сумму" HorizontalAlignment="Left" Margin="8,123,0,0" VerticalAlignment="Top" Width="136"/>
+        <TextBox x:Name="moneyTextBox" HorizontalAlignment="Left" Margin="160,127,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" RenderTransformOrigin="0.517,2.627"/>
+        <Button x:Name="addMoneyButton" Content="Пополнить" HorizontalAlignment="Left" Margin="202,164,0,0" VerticalAlignment="Top" Width="78" Click="addMoneyButton_Click" BorderBrush="Black" Background="White"/>
+        <Button x:Name="exitButton" Content="Выйти из системы" HorizontalAlignment="Left" Margin="10,164,0,0" VerticalAlignment="Top" Width="120" Click="exitButton_Click" Background="White" BorderBrush="Black" />
 
     </Grid>
 </Window>

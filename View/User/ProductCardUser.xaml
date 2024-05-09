@@ -5,29 +5,41 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kurs"
         mc:Ignorable="d"
-        Title="ProductCard" Height="276" Width="766" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
-    <Grid Margin="0,0,0,-6">
-        <Label Content="Тип товара" HorizontalAlignment="Left" Margin="20,19,0,0" VerticalAlignment="Top" Height="24" Width="72"/>
-        <Label Name="typeProduct" Content="Тип" HorizontalAlignment="Left" Margin="198,19,0,0" VerticalAlignment="Top" Height="24" Width="121"/>
-        <Label Content="Наименование" HorizontalAlignment="Left" Margin="20,48,0,0" VerticalAlignment="Top" Height="24" Width="94"/>
-        <Label x:Name="nameProduct" Content="Наименование" HorizontalAlignment="Left" Margin="198,48,0,0" VerticalAlignment="Top" Height="38" Width="277"/>
-        <Label Content="Описание товара" HorizontalAlignment="Left" Margin="20,79,0,0" VerticalAlignment="Top" Height="24" Width="108"/>
+        Title="ProductCard" Height="271" Width="501" ResizeMode="NoResize" WindowStartupLocation="CenterOwner">
+    <Grid Margin="10,10,10,-6">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" MinWidth="240.107"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-        <Label Content="Цена (в руб.)" HorizontalAlignment="Left" Margin="27,176,0,0" VerticalAlignment="Top" Height="24" Width="83"/>
-        <Label x:Name="costProduct" Content="0" HorizontalAlignment="Left" Margin="204,176,0,0" VerticalAlignment="Top" Height="24" Width="115"/>
-        <Label Content="В наличии(штук)" HorizontalAlignment="Left" Margin="27,205,0,0" VerticalAlignment="Top" Height="24" Width="103"/>
-        <Label x:Name="numberForPurchase" Content="0" HorizontalAlignment="Left" Margin="204,205,0,0" VerticalAlignment="Top" Height="24" Width="115"/>
-        <RichTextBox x:Name="descriptionProduct" Margin="202,91,291,105" IsReadOnly="True">
-            <FlowDocument>
-                <Paragraph>
-                    <Run Text=""/>
-                </Paragraph>
-            </FlowDocument>
-        </RichTextBox>
-        <TextBox x:Name="countForPurchaseTextBox" HorizontalAlignment="Left" Margin="625,126,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="48" IsReadOnly="True" Height="26" BorderBrush="Black" TextAlignment="Center"/>
-        <TextBlock HorizontalAlignment="Left" Margin="577,81,0,0" TextWrapping="Wrap" Text="Обновить количество товара в корзине" VerticalAlignment="Top" Width="143" TextAlignment="Center"/>
-        <Button x:Name="plusButton" Content="+" HorizontalAlignment="Left" Margin="694,126,0,0" VerticalAlignment="Top" Height="26" Width="26" FontWeight="Bold" BorderBrush="Black" Foreground="Black" Background="White" Click="plusButton_Click"/>
-        <Button x:Name="minusButton" Content="-" HorizontalAlignment="Left" Margin="577,126,0,0" VerticalAlignment="Top" Height="26" Width="26" FontWeight="Bold" Background="White" BorderBrush="Black" Click="minusButton_Click"/>
+        <Label Content="Тип товара" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+        <Label Name="typeProduct" Content="Тип" VerticalAlignment="Center" Grid.ColumnSpan="2" Height="26" Margin="240,0,0,0"/>
 
+        <Label Content="Наименование" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+        <Label x:Name="nameProduct" Content="Наименование" Grid.Row="1" VerticalAlignment="Center" Grid.ColumnSpan="2" Height="26" Margin="240,0,0,0"/>
+
+        <Label Content="Описание товара" Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" Height="26" Margin="-5,3,5,0"/>
+        <RichTextBox x:Name="descriptionProduct" Grid.Row="2" VerticalAlignment="Center" IsReadOnly="True" Grid.ColumnSpan="2" Height="84" Margin="240,0,0,0"/>
+
+        <Label Content="Цена (в руб.)" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+        <Label x:Name="costProduct" Content="0" Grid.Row="3" VerticalAlignment="Center" Grid.ColumnSpan="2" Height="26" Margin="240,0,0,0"/>
+
+        <Label Content="В наличии (штук)" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Height="26"/>
+        <Label x:Name="numberForPurchase" Content="0" Grid.Row="4" VerticalAlignment="Center" Grid.ColumnSpan="2" Height="26" Margin="240,0,0,0"/>
+        <TextBlock Text="Обновить количество товара в корзине" Margin="0,4,10,-4" Grid.Row="5" TextWrapping="Wrap"/>
+        <StackPanel Grid.Row="5" Orientation="Horizontal" Grid.ColumnSpan="2" Margin="240,0,0,0">
+
+            <Button x:Name="minusButton" Content="-" Width="26" Height="26" FontWeight="Bold" Click="minusButton_Click" BorderBrush="Black" Background="White"/>
+            <TextBox x:Name="countForPurchaseTextBox" Width="48" Height="26" TextAlignment="Center" BorderBrush="Black"/>
+            <Button x:Name="plusButton" Content="+" Width="26" Height="26" FontWeight="Bold" Click="plusButton_Click" Background="White" BorderBrush="Black"/>
+        </StackPanel>
     </Grid>
 </Window>

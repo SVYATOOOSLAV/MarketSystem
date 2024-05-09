@@ -22,6 +22,6 @@
         <Button x:Name="BasketButton" HorizontalAlignment="Left" Margin="492,10,0,0" VerticalAlignment="Top" Height="48" Width="50" Click="BasketButton_Click" BorderBrush="Black" Background="White" RenderTransformOrigin="0.473,0.482">
             <Image Source="/Images/basket.png" Height="33" Width="38"/>
         </Button>
-        <Button x:Name="orderButton" Content="История заказов" HorizontalAlignment="Left" Margin="492,87,0,0" VerticalAlignment="Top" Height="33" Width="146" Click="orderButton_Click"/>
+        <Button x:Name="orderButton" Content="История заказов" HorizontalAlignment="Left" Margin="492,87,0,0" VerticalAlignment="Top" Height="33" Width="146" Click="orderButton_Click" BorderBrush="Black" Background="White"/>
     </Grid>
 </Window>

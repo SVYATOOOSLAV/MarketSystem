@@ -133,7 +133,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataBase\DataBaseConn.cs" />
     <Compile Include="View\Authorization.xaml.cs">
       <DependentUpon>Authorization.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -84,7 +84,8 @@ namespace Kurs.View.Admin
                 ProductCardAdmin productCardAdmin = new ProductCardAdmin(currentProduct, products, dataBaseManager);
                 productCardAdmin.ShowDialog();
 
-                mainDataGrid.Items.Refresh();
+                mainDataGrid.ItemsSource = null;
+                mainDataGrid.ItemsSource = products;
             }
         }
 
@@ -92,6 +93,7 @@ namespace Kurs.View.Admin
         {
             CreateProductWindow createProductWindow = new CreateProductWindow(products, dataBaseManager);
             createProductWindow.ShowDialog();
+            mainDataGrid.Items.Refresh();
         }
 
         private void LogOutButton_Click(object sender, RoutedEventArgs e)

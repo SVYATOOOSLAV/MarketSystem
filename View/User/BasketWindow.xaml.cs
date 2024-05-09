@@ -103,9 +103,10 @@ namespace Kurs.View.user
 
         private void PurchaseProducts()
         {
-            databaseManager.BeginTransaction();
             try
             {
+                databaseManager.BeginTransaction();
+
                 foreach (var product in availableProducts)
                 {
                     string query = "INSERT INTO [order] (time_order, login_user, name_product, count_purchase) VALUES (@time, @login, @name_product, @count)";
@@ -130,12 +131,16 @@ namespace Kurs.View.user
 
                 databaseManager.CommitTransaction();
 
+                user.basket.Clear();
+                ShowBasketUser();
+
                 MessageBox.Show("Поздравляем с приобретением, заходите еще!", "Поздравление", MessageBoxButton.OK, MessageBoxImage.Asterisk);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 databaseManager.RollbackTransaction();
-                throw;
+
+                MessageBox.Show($"An error occurred while purchasing products: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
