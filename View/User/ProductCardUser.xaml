@@ -10,7 +10,7 @@
         <Label Content="Тип товара" HorizontalAlignment="Left" Margin="20,19,0,0" VerticalAlignment="Top" Height="24" Width="72"/>
         <Label Name="typeProduct" Content="Тип" HorizontalAlignment="Left" Margin="198,19,0,0" VerticalAlignment="Top" Height="24" Width="121"/>
         <Label Content="Наименование" HorizontalAlignment="Left" Margin="20,48,0,0" VerticalAlignment="Top" Height="24" Width="94"/>
-        <Label x:Name="nameProduct" Content="Наименование" HorizontalAlignment="Left" Margin="198,48,0,0" VerticalAlignment="Top" Height="24" Width="94"/>
+        <Label x:Name="nameProduct" Content="Наименование" HorizontalAlignment="Left" Margin="198,48,0,0" VerticalAlignment="Top" Height="38" Width="277"/>
         <Label Content="Описание товара" HorizontalAlignment="Left" Margin="20,79,0,0" VerticalAlignment="Top" Height="24" Width="108"/>
 
         <Label Content="Цена (в руб.)" HorizontalAlignment="Left" Margin="27,176,0,0" VerticalAlignment="Top" Height="24" Width="83"/>

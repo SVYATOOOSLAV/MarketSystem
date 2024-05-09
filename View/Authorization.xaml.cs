@@ -1,4 +1,5 @@
-﻿using Kurs.enums;
+﻿using Kurs.DataBase;
+using Kurs.enums;
 using Kurs.model;
 using Kurs.View.Admin;
 using System;
@@ -24,40 +25,39 @@ namespace Kurs
 {
     public partial class Authorization : Window
     {
-        DataBase dataBase = new DataBase();
+        private readonly DatabaseManager databaseManager;
+
         public Authorization()
         {
             InitializeComponent();
-            dataBase.openConnection();
+            String connectionString = @"Data Source=SVYATBOOK;Initial Catalog=kurs;Integrated Security=True";
+            databaseManager = new DatabaseManager(connectionString);
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            String login = loginTextBox.Text;
-            String password = passwordTextBox.Password;
+            string login = loginTextBox.Text;
+            string password = passwordTextBox.Password;
 
-            SqlDataAdapter adapter = new SqlDataAdapter();
-            DataTable dataTable = new DataTable();
+            string query = "SELECT UA.login_user, UI.budget " +
+                           "FROM user_auth UA LEFT JOIN user_info UI ON UA.login_user = UI.login_user " +
+                           "WHERE UA.login_user = @login AND UA.password_user = @password";
 
-            String query = $"select UA.login_user, UI.budget " +
-                $"from user_auth UA left join user_info UI on UA.login_user = UI.login_user " +
-                $"where UA.login_user=@login and UA.password_user=@password";
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@login", SqlDbType.VarChar) {Value = login},
+                new SqlParameter("@password", SqlDbType.VarChar) {Value = password}
+            };
 
-            SqlCommand command = new SqlCommand(query, dataBase.getConnection());
-            command.Parameters.AddWithValue("@login", login);
-            command.Parameters.AddWithValue("@password", password);
-
-            adapter.SelectCommand = command;
-            adapter.Fill(dataTable);
-            dataBase.closeConnection();
+            DataTable dataTable = databaseManager.ExecuteQuery(query, parameters);
 
             if (dataTable.Rows.Count == 1)
             {
-                User user = getUserFromDB(dataTable);
+                User user = GetUserFromDataRow(dataTable.Rows[0]);
 
                 MessageBox.Show("Вы успешно вошли", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
-                MainWindowUser userWindow = new MainWindowUser(user);
-                this.Close();
+                MainWindowUser userWindow = new MainWindowUser(user, databaseManager);
+                Close();
                 userWindow.ShowDialog();
             }
             else
@@ -66,14 +66,14 @@ namespace Kurs
             }
         }
 
-        private User getUserFromDB(DataTable dataTable)
+        private User GetUserFromDataRow(DataRow row)
         {
-            DataRow row = dataTable.Rows[0];
-            String userLogin = row["login_user"].ToString();
-            Double budget = Convert.ToDouble(row["budget"].ToString());
+            string userLogin = row["login_user"].ToString();
+            double budget = Convert.ToDouble(row["budget"]);
 
             return new User(userLogin, budget);
         }
+
 
         private void createAcc_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
@@ -83,8 +83,8 @@ namespace Kurs
 
         private void adminAuth_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            AuthorizationAdmin auth = new AuthorizationAdmin(); 
-            this.Close(); 
+            AuthorizationAdmin auth = new AuthorizationAdmin(databaseManager);
+            this.Close();
             auth.ShowDialog();
         }
     }

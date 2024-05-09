@@ -71,7 +71,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="DataBase\DataBaseManager.cs" />
+    <Compile Include="DataBase\DatabaseManager.cs" />
     <Compile Include="enums\TypeUser.cs" />
     <Compile Include="model\Admin.cs" />
     <Compile Include="model\DesiredProduct.cs" />
@@ -133,7 +133,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DataBase\DataBase.cs" />
+    <Compile Include="DataBase\DataBaseConn.cs" />
     <Compile Include="View\Authorization.xaml.cs">
       <DependentUpon>Authorization.xaml</DependentUpon>
       <SubType>Code</SubType>

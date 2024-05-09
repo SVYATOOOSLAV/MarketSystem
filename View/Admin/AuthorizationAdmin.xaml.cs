@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Data;
 using System.Windows;
 using Kurs.model;
+using Kurs.DataBase;
 
 namespace Kurs.View.Admin
 {
@@ -12,38 +13,28 @@ namespace Kurs.View.Admin
     /// </summary>
     public partial class AuthorizationAdmin : Window
     {
-        DataBase dataBase = new DataBase();
-        public AuthorizationAdmin()
+        private readonly DatabaseManager databaseManager;
+
+        public AuthorizationAdmin(DatabaseManager databaseManager)
         {
             InitializeComponent();
+            this.databaseManager = databaseManager;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            String login = loginTextBox.Text;
-            String password = passwordTextBox.Password;
+            string login = loginTextBox.Text;
+            string password = passwordTextBox.Password;
 
-            SqlDataAdapter adapter = new SqlDataAdapter();
-            DataTable dataTable = new DataTable();
-
-            String query = $"select AA.login_admin from admin_auth AA " +
-                $"where AA.login_admin=@login and AA.password_admin=@password";
-
-            SqlCommand command = new SqlCommand(query, dataBase.getConnection());
-            command.Parameters.AddWithValue("@login", login);
-            command.Parameters.AddWithValue("@password", password);
-
-            adapter.SelectCommand = command;
-            adapter.Fill(dataTable);
-            dataBase.closeConnection();
+            DataTable dataTable = GetUserByLoginAndPassword(login, password);
 
             if (dataTable.Rows.Count == 1)
             {
-                model.Admin admin = getUserFromDB(dataTable);
+                model.Admin admin = GetUserFromDataRow(dataTable.Rows[0]);
 
                 MessageBox.Show("Вы успешно вошли", "Успешно", MessageBoxButton.OK, MessageBoxImage.Information);
-                MainWindowAdmin userWindow = new MainWindowAdmin(admin);
-                this.Close();
+                MainWindowAdmin userWindow = new MainWindowAdmin(admin, databaseManager);
+                Close();
                 userWindow.ShowDialog();
             }
             else
@@ -52,11 +43,21 @@ namespace Kurs.View.Admin
             }
         }
 
-        private model.Admin getUserFromDB(DataTable dataTable)
+        private DataTable GetUserByLoginAndPassword(string login, string password)
         {
-            DataRow row = dataTable.Rows[0];
-            String login = row["login_admin"].ToString();
+            string query = "SELECT AA.login_admin FROM admin_auth AA WHERE AA.login_admin = @login AND AA.password_admin = @password";
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@login", SqlDbType.VarChar) {Value = login},
+                new SqlParameter("@password", SqlDbType.VarChar) {Value = password}
+            };
 
+            return databaseManager.ExecuteQuery(query, parameters);
+        }
+
+        private model.Admin GetUserFromDataRow(DataRow row)
+        {
+            string login = row["login_admin"].ToString();
             return new model.Admin(login);
         }
     }

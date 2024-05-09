@@ -1,4 +1,5 @@
-﻿using Kurs.model;
+﻿using Kurs.DataBase;
+using Kurs.model;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -22,16 +23,17 @@ namespace Kurs
     /// </summary>
     public partial class UserLC : Window
     {
-        private User user;
-        private Window latestWindow;
-        private DataBase dataBase = new DataBase();
+        private readonly User user;
+        private readonly Window latestWindow;
+        private readonly DatabaseManager databaseManager;
 
-        public UserLC(User user, Window mainWindow)
+        public UserLC(User user, Window mainWindow, DatabaseManager databaseManager)
         {
             InitializeComponent();
 
             this.user = user;
             latestWindow = mainWindow;
+            this.databaseManager = databaseManager;
 
             loginTextBox.Text = user.login;
             roleTextBox.Text = "user";
@@ -46,33 +48,33 @@ namespace Kurs
                 return;
             }
 
-            dataBase.openConnection();
-            SqlDataAdapter adapter = new SqlDataAdapter();
-            DataTable dataTable = new DataTable();
-
-            String query = "update user_info set budget=@budget where login_user=@login";
-
-            SqlCommand command = new SqlCommand(query, dataBase.getConnection());
-            command.Parameters.AddWithValue("@budget", user.budget + amount);
-            command.Parameters.AddWithValue("@login", loginTextBox.Text);
-            command.ExecuteNonQuery();
-
-            MessageBox.Show("Успешное пополнение средств", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-
-            String query2 = "select budget from user_info where login_user=@login";
-            command = new SqlCommand(query2, dataBase.getConnection());
-            command.Parameters.AddWithValue("@login", loginTextBox.Text);
-            adapter.SelectCommand = command;
-            adapter.Fill(dataTable);
-
-            DataRow row = dataTable.Rows[0];
-            budgetTextBox.Text = row["budget"].ToString();
-            user.budget = Double.Parse(row["budget"].ToString());
-            moneyTextBox.Clear();
-
-            dataBase.closeConnection();
+            try
+            {
+                double newBudget = user.budget + amount;
+                UpdateUserBudget(newBudget);
+                user.budget = newBudget;
+                moneyTextBox.Clear();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при пополнении счета: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
+        private void UpdateUserBudget(double newBudget)
+        {
+            string query = "UPDATE user_info SET budget=@budget WHERE login_user=@login";
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@budget", SqlDbType.Float) {Value = newBudget},
+                new SqlParameter("@login", SqlDbType.VarChar) {Value = user.login}
+            };
+
+            databaseManager.ExecuteQuery(query, parameters);
+
+            budgetTextBox.Text = newBudget.ToString();
+            MessageBox.Show("Успешное пополнение средств", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
 
         private void exitButton_Click(object sender, RoutedEventArgs e)
         {

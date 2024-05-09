@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.ComponentModel;
+using Kurs.DataBase;
 
 namespace Kurs
 {
@@ -25,17 +26,19 @@ namespace Kurs
     {
         private User user;
         private Product product;
-        private DataBase dataBase = new DataBase();
+        private DatabaseManager databaseManager;
         private SqlDataAdapter adapter = new SqlDataAdapter();
         private DataTable dataTable = new DataTable();
         private int numberForPurchaseInDB;
         private int stateAfterSelectProduct;
 
-        public ProductCardUser(User user, Product product)
+        public ProductCardUser(User user, Product product, DatabaseManager databaseManager)
         {
             InitializeComponent();
             this.user = user;
             this.product = product;
+            this.databaseManager = databaseManager;
+            databaseManager.openConnection();
             addContentOnWindow();
 
             var desiredCount = user.basket.FirstOrDefault(pair => pair.Key.nameProduct.Equals(product.nameProduct)).Value;
@@ -48,11 +51,9 @@ namespace Kurs
 
         private void ProductCardUser_Closing(object sender, CancelEventArgs e)
         {
-            // update DB after close window
-            dataBase.openConnection();
             int currentCount = int.Parse(countForPurchaseTextBox.Text);
             String query = $"update product set numberForPurchase=@count where product.name=@name";
-            SqlCommand command = new SqlCommand(query, dataBase.getConnection());
+            SqlCommand command = new SqlCommand(query, databaseManager.getConnection());
 
             if (stateAfterSelectProduct > 0 && stateAfterSelectProduct < currentCount)
             {
@@ -69,7 +70,7 @@ namespace Kurs
 
             command.Parameters.AddWithValue("@name", product.nameProduct);
             command.ExecuteNonQuery();
-            dataBase.closeConnection();
+            databaseManager.closeConnection();
         }
 
         private void addContentOnWindow()
@@ -84,14 +85,12 @@ namespace Kurs
 
         private void updateNumberForPurchaseInDB()
         {
-            dataBase.openConnection();
             String query = $"select numberForPurchase from product where name=@nameProduct";
-            SqlCommand command = new SqlCommand(query, dataBase.getConnection());
+            SqlCommand command = new SqlCommand(query, databaseManager.getConnection());
             command.Parameters.AddWithValue("@nameProduct", product.nameProduct);
             adapter.SelectCommand = command;
             adapter.Fill(dataTable);
             numberForPurchaseInDB = int.Parse(dataTable.Rows[0]["numberForPurchase"].ToString());
-            dataBase.closeConnection();
         }
 
         private void plusButton_Click(object sender, RoutedEventArgs e)

@@ -1,4 +1,5 @@
-﻿using Kurs.model;
+﻿using Kurs.DataBase;
+using Kurs.model;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -24,68 +25,95 @@ namespace Kurs.View.admin
     {
         private Product product;
         private List<Product> products;
-        private DataBase dataBase = new DataBase();
+        private DatabaseManager dataBaseManager;
 
-        public ProductCardAdmin(Product product, List<Product> products)
+        public ProductCardAdmin(Product product, List<Product> products, DatabaseManager databaseManager)
         {
             InitializeComponent();
             this.product = product;
             this.products = products;
-            addContentOnWindow();
+            this.dataBaseManager = databaseManager;
+            AddContentOnWindow();
         }
 
-        private void addContentOnWindow()
+        private void AddContentOnWindow()
         {
             typeProduct.Content = product.typeProduct;
             nameProductTextBox.Text = product.nameProduct;
-            TextRange textRange = new TextRange(descriptionProduct.Document.ContentStart, descriptionProduct.Document.ContentEnd);
-            textRange.Text = product.descriptionProduct;
+            descriptionProduct.Document.Blocks.Clear();
+            descriptionProduct.Document.Blocks.Add(new Paragraph(new Run(product.descriptionProduct)));
             priceProductTextBox.Text = product.costProduct.ToString();
             numberForPurchaseTextBox.Text = product.numberForPurchase.ToString();
         }
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            String lastName = product.nameProduct;
-            TextRange textRange = new TextRange(descriptionProduct.Document.ContentStart, descriptionProduct.Document.ContentEnd);
-            string text = textRange.Text;
+            string newName = nameProductTextBox.Text;
+            string description = new TextRange(descriptionProduct.Document.ContentStart, descriptionProduct.Document.ContentEnd).Text;
+            double cost;
+            int count;
 
-            dataBase.openConnection();
-            String query = $"update product set name=@newName, description=@description, cost=@cost, numberForPurchase=@count where product.name=@lastName";
-            SqlCommand command = new SqlCommand(query, dataBase.getConnection());
+            if (!double.TryParse(priceProductTextBox.Text, out cost) || !int.TryParse(numberForPurchaseTextBox.Text, out count))
+            {
+                MessageBox.Show("Invalid price or number for purchase.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
-            command.Parameters.AddWithValue("@newName", nameProductTextBox.Text);
-            command.Parameters.AddWithValue("@description", text);
-            command.Parameters.AddWithValue("@cost", double.Parse(priceProductTextBox.Text));
-            command.Parameters.AddWithValue("@count", int.Parse(numberForPurchaseTextBox.Text));
-            command.Parameters.AddWithValue("@lastName", lastName);
+            try
+            {
+                dataBaseManager.openConnection();
 
-            command.ExecuteNonQuery();
-            dataBase.closeConnection();
+                string query = "UPDATE product SET name=@newName, description=@description, cost=@cost, numberForPurchase=@count WHERE name=@oldName";
+                SqlCommand command = new SqlCommand(query, dataBaseManager.getConnection());
 
-            product.nameProduct = nameProductTextBox.Text;
-            product.descriptionProduct = text;
-            product.costProduct = double.Parse(priceProductTextBox.Text);
-            product.numberForPurchase = int.Parse(numberForPurchaseTextBox.Text);
+                command.Parameters.AddWithValue("@newName", newName);
+                command.Parameters.AddWithValue("@description", description);
+                command.Parameters.AddWithValue("@cost", cost);
+                command.Parameters.AddWithValue("@count", count);
+                command.Parameters.AddWithValue("@oldName", product.nameProduct);
 
-            addContentOnWindow();
+                command.ExecuteNonQuery();
 
-            MessageBox.Show("Данные успешно обновлены", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                product.nameProduct = newName;
+                product.descriptionProduct = description;
+                product.costProduct = cost;
+                product.numberForPurchase = count;
+
+                AddContentOnWindow();
+
+                MessageBox.Show("Data updated successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                dataBaseManager.closeConnection();
+            }
         }
 
-        private void deleteProductButton_Click(object sender, RoutedEventArgs e)
+        private void DeleteProductButton_Click(object sender, RoutedEventArgs e)
         {
-            dataBase.openConnection();
-            String query = $"delete product where name=@nameProduct";
-            SqlCommand command = new SqlCommand(query, dataBase.getConnection());
-
-            command.Parameters.AddWithValue("@nameProduct", product.nameProduct);
-            command.ExecuteNonQuery();
-            dataBase.closeConnection();
-
-            products.Remove(product);
-
-            this.Close();
+            try
+            {
+                dataBaseManager.openConnection();
+                string query = "DELETE FROM product WHERE name=@name";
+                SqlCommand command = new SqlCommand(query, dataBaseManager.getConnection());
+                command.Parameters.AddWithValue("@name", product.nameProduct);
+                command.ExecuteNonQuery();
+                products.Remove(product);
+                MessageBox.Show("Product deleted successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                dataBaseManager.closeConnection();
+            }
         }
     }
 }

@@ -15,6 +15,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Kurs.View.admin;
+using Kurs.DataBase;
+using System.Collections.ObjectModel;
 
 namespace Kurs.View.Admin
 {
@@ -24,88 +26,85 @@ namespace Kurs.View.Admin
     public partial class MainWindowAdmin : Window
     {
         private model.Admin admin;
-        private DataBase dataBase = new DataBase();
+        private DatabaseManager dataBaseManager;
         private List<Product> products = new List<Product>();
 
-        public MainWindowAdmin(model.Admin admin)
+        public MainWindowAdmin(model.Admin admin, DatabaseManager databaseManager)
         {
             InitializeComponent();
             this.admin = admin;
-
-            initDataGrid();
+            this.dataBaseManager = databaseManager; 
+            InitDataGrid();
         }
 
-        // refactor, create class in /service
-        private void initDataGrid()
+        private async void InitDataGrid()
         {
-            dataBase.openConnection();
-            SqlDataAdapter adapter = new SqlDataAdapter();
-            DataTable dataTable = new DataTable();
-
-            String query = $"select [type], [name], [description], [cost], numberForPurchase from product";
-            SqlCommand command = new SqlCommand(query, dataBase.getConnection());
-
-            adapter.SelectCommand = command;
-            adapter.Fill(dataTable);
-            dataBase.closeConnection();
-
-            products = getListProduct(dataTable);
-            mainDataGrid.ItemsSource = products;
-        }
-
-        private List<Product> getListProduct(DataTable dataTable)
-        {
-            List<Product> products = new List<Product>();
-            for (int i = 0; i < dataTable.Rows.Count; i++)
+            try
             {
-                DataRow row = dataTable.Rows[i];
+                dataBaseManager.openConnection();
+                DataTable dataTable = await Task.Run(() => dataBaseManager.ExecuteQuery("select [type], [name], [description], [cost], numberForPurchase from product"));
 
+                products = GetProductList(dataTable);
+                mainDataGrid.ItemsSource = products;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while loading products: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                dataBaseManager.closeConnection();
+            }
+        }
+
+        private List<Product> GetProductList(DataTable dataTable)
+        {
+            List<Product> productList = new List<Product>();
+            foreach (DataRow row in dataTable.Rows)
+            {
                 TypeProduct type = (TypeProduct)Enum.Parse(typeof(TypeProduct), row["type"].ToString(), true);
-                String name = row["name"].ToString();
-                String description = row["description"].ToString();
-                Double cost = Convert.ToDouble(row["cost"]);
+                string name = row["name"].ToString();
+                string description = row["description"].ToString();
+                double cost = Convert.ToDouble(row["cost"]);
                 int countForPurchase = Convert.ToInt32(row["numberForPurchase"]);
 
-                products.Add(new Product(type, name, description, cost, countForPurchase));
+                productList.Add(new Product(type, name, description, cost, countForPurchase));
             }
-
-            return products;
+            return productList;
         }
 
         private void mainDataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             if (sender is DataGrid dataGrid && dataGrid.SelectedItem != null)
             {
-                Product item = (Product)dataGrid.SelectedItem;
-
-                Product currentProduct = products.FirstOrDefault(product => product.nameProduct.Equals(item.nameProduct))
+                Product selectedProduct = (Product)dataGrid.SelectedItem;
+                Product currentProduct = products.FirstOrDefault(product => product.nameProduct.Equals(selectedProduct.nameProduct))
                     ?? throw new ArgumentException("Продукт не был найден");
 
-                ProductCardAdmin productCard = new ProductCardAdmin(currentProduct, products);
-                productCard.ShowDialog();
+                ProductCardAdmin productCardAdmin = new ProductCardAdmin(currentProduct, products, dataBaseManager);
+                productCardAdmin.ShowDialog();
 
                 mainDataGrid.Items.Refresh();
             }
         }
 
-        private void createItemButton_Click(object sender, RoutedEventArgs e)
+        private void CreateItemButton_Click(object sender, RoutedEventArgs e)
         {
-            CreateProductWindow window = new CreateProductWindow(products);
-            window.ShowDialog();
-            mainDataGrid.Items.Refresh(); 
+            CreateProductWindow createProductWindow = new CreateProductWindow(products, dataBaseManager);
+            createProductWindow.ShowDialog();
         }
 
-        private void logOutButton_Click(object sender, RoutedEventArgs e)
+        private void LogOutButton_Click(object sender, RoutedEventArgs e)
         {
             Authorization authorization = new Authorization();
-            this.Close();
+            Close();
             authorization.ShowDialog();
         }
 
-        private void orderButton_Click(object sender, RoutedEventArgs e)
+        private void OrderButton_Click(object sender, RoutedEventArgs e)
         {
-            OrderWindow orderWindow = new OrderWindow(admin);
-            orderWindow.ShowDialog(); 
+            OrderWindow orderWindow = new OrderWindow(admin, dataBaseManager);
+            orderWindow.ShowDialog();
         }
     }
 }

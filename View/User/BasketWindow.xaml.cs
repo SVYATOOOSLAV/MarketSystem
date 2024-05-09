@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Kurs.View.admin;
+using Kurs.DataBase;
 
 namespace Kurs.View.user
 {
@@ -24,34 +25,32 @@ namespace Kurs.View.user
     /// </summary>
     public partial class BasketWindow : Window
     {
-        private User user;
+        private readonly User user;
+        private readonly List<Product> products;
+        private readonly DatabaseManager databaseManager;
         private List<DesiredProduct> availableProducts;
         private double resultPrice;
-        private DataBase dataBase = new DataBase();
-        private List<Product> products;
 
-        public BasketWindow(User user, List<Product> products)
+        public BasketWindow(User user, List<Product> products, DatabaseManager databaseManager)
         {
             InitializeComponent();
             this.user = user;
+            this.products = products;
+            this.databaseManager = databaseManager;
 
             userLabel.Content += user.login;
 
-            updateDataOnWindow();
-
-            this.products = products;
+            UpdateDataOnWindow();
         }
 
-        private void updateDataOnWindow()
+        private void UpdateDataOnWindow()
         {
-            showBasketUser();
-
-            updateResultPrice();
-
-            budgetUser.Text = user.budget + " руб.";
+            ShowBasketUser();
+            UpdateResultPrice();
+            budgetUser.Text = $"{user.budget} руб.";
         }
 
-        private void showBasketUser()
+        private void ShowBasketUser()
         {
             availableProducts = user.basket.Select(product =>
                 new DesiredProduct(
@@ -66,77 +65,81 @@ namespace Kurs.View.user
             mainDataGrid.ItemsSource = availableProducts;
         }
 
-        private void updateResultPrice()
+        private void UpdateResultPrice()
         {
-            resultPrice = 0;
-            foreach (var product in mainDataGrid.Items)
-            {
-                DesiredProduct row = product as DesiredProduct;
-                if (row != null)
-                {
-                    resultPrice += row.costProduct * row.desiredCount;
-                }
-            }
-
-            ResultPriceValue.Text = resultPrice + " руб.";
+            resultPrice = availableProducts.Sum(product => product.costProduct * product.desiredCount);
+            ResultPriceValue.Text = $"{resultPrice} руб.";
         }
 
-        // Переход в личный кабинет
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            UserLC lc = new UserLC(user, this);
+            UserLC lc = new UserLC(user, this, databaseManager);
             lc.ShowDialog();
-            budgetUser.Text = user.budget + " руб.";
+            budgetUser.Text = $"{user.budget} руб.";
         }
 
         private void PurchaseButton_Click(object sender, RoutedEventArgs e)
         {
             if (user.budget < resultPrice)
             {
-                MessageBoxResult result = MessageBox.Show("У вас недостаточно средств, поплните их", "Информирование", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                MessageBoxResult result = MessageBox.Show("У вас недостаточно средств, пополните их", "Информирование", MessageBoxButton.OKCancel, MessageBoxImage.Error);
                 if (result == MessageBoxResult.OK)
                 {
                     Button_Click(sender, e);
                 }
             }
-
-            if (user.budget >= resultPrice)
+            else
             {
-                dataBase.openConnection();
-                SqlCommand command;
-                foreach (var product in mainDataGrid.Items)
+                try
                 {
-                    DesiredProduct row = product as DesiredProduct;
-                    if (row != null)
-                    {
-                        String query = $"insert into [order](time_order,login_user,name_product,count_purchase) values(@time, @login, @name_product, @count)";
-
-                        command = new SqlCommand(query, dataBase.getConnection());
-                        command.Parameters.AddWithValue("@time", DateTime.Now);
-                        command.Parameters.AddWithValue("@login", user.login);
-                        command.Parameters.AddWithValue("@name_product", row.nameProduct);
-                        command.Parameters.AddWithValue("@count", row.desiredCount);
-                        command.ExecuteNonQuery();
-                    }
+                    PurchaseProducts();
                 }
-                
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при покупке товаров: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private void PurchaseProducts()
+        {
+            databaseManager.BeginTransaction();
+            try
+            {
+                foreach (var product in availableProducts)
+                {
+                    string query = "INSERT INTO [order] (time_order, login_user, name_product, count_purchase) VALUES (@time, @login, @name_product, @count)";
+                    SqlParameter[] parameters =
+                    {
+                        new SqlParameter("@time", SqlDbType.DateTime) {Value = DateTime.Now},
+                        new SqlParameter("@login", SqlDbType.VarChar) {Value = user.login},
+                        new SqlParameter("@name_product", SqlDbType.VarChar) {Value = product.nameProduct},
+                        new SqlParameter("@count", SqlDbType.Int) {Value = product.desiredCount}
+                    };
+                    databaseManager.ExecuteQuery(query, parameters);
+                }
+
                 user.budget -= resultPrice;
+                string queryUpdateBudget = "UPDATE user_info SET budget=@budget WHERE login_user=@login";
+                SqlParameter[] parametersUpdateBudget =
+                {
+                    new SqlParameter("@budget", SqlDbType.Float) {Value = user.budget},
+                    new SqlParameter("@login", SqlDbType.VarChar) {Value = user.login}
+                };
+                databaseManager.ExecuteQuery(queryUpdateBudget, parametersUpdateBudget);
 
-                String queryUpdateBudget = $"update user_info set budget=@budget where login_user=@login";
-                command = new SqlCommand(queryUpdateBudget, dataBase.getConnection());
-                command.Parameters.AddWithValue("@budget", user.budget);
-                command.Parameters.AddWithValue("@login", user.login);
-                command.ExecuteNonQuery();
+                databaseManager.CommitTransaction();
 
-                dataBase.closeConnection();
-
-                budgetUser.Text = user.budget + " руб.";
-                ResultPriceValue.Text = " руб.";
-
-                mainDataGrid.ItemsSource = null;
-                user.basket.Clear();
-
-                MessageBox.Show("Поздравляем с приобретением, заходите еще!","Поздравление",MessageBoxButton.OK,MessageBoxImage.Asterisk);
+                MessageBox.Show("Поздравляем с приобретением, заходите еще!", "Поздравление", MessageBoxButton.OK, MessageBoxImage.Asterisk);
+            }
+            catch (Exception)
+            {
+                databaseManager.RollbackTransaction();
+                throw;
+            }
+            finally
+            {
+                UpdateDataOnWindow();
             }
         }
 
@@ -145,14 +148,13 @@ namespace Kurs.View.user
             if (sender is DataGrid dataGrid && dataGrid.SelectedItem != null)
             {
                 Product item = (Product)dataGrid.SelectedItem;
-
-                Product currentProduct = products.FirstOrDefault(product => product.nameProduct.Equals(item.nameProduct))
-                    ?? throw new ArgumentException("Продукт не был найден");
-
-                ProductCardUser productCard = new ProductCardUser(user, currentProduct);
-                productCard.ShowDialog();
-
-                updateDataOnWindow();
+                Product currentProduct = products.FirstOrDefault(product => product.nameProduct.Equals(item.nameProduct));
+                if (currentProduct != null)
+                {
+                    ProductCardUser productCard = new ProductCardUser(user, currentProduct, databaseManager);
+                    productCard.ShowDialog();
+                    UpdateDataOnWindow();
+                }
             }
         }
     }

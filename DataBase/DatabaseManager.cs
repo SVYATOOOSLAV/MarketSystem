@@ -8,32 +8,83 @@ using System.Threading.Tasks;
 
 namespace Kurs.DataBase
 {
-    public class DataBaseManager
+    public class DatabaseManager
     {
-        private readonly string connectionString;
+        private string connectionString = "";
+        private SqlConnection connection;
+        private SqlTransaction transaction;
 
-        public DataBaseManager(string connectionString)
+        public DatabaseManager(string connectionString)
         {
-            this.connectionString = connectionString;
+           connection = new SqlConnection(connectionString);
         }
 
+        public SqlConnection getConnection() => connection;
+
+        public void openConnection()
+        {
+            if (connection == null)
+            {
+                connection = new SqlConnection(connectionString);
+            }
+
+            if (connection.State != ConnectionState.Open)
+            {
+                connection.Open();
+            }
+        }
+
+        public void closeConnection()
+        {
+            if (connection != null && connection.State == ConnectionState.Open)
+            {
+                connection.Close();
+            }
+        }
+
+        // Метод для выполнения запроса
         public DataTable ExecuteQuery(string query, SqlParameter[] parameters = null)
         {
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            openConnection();
+            using (SqlCommand command = new SqlCommand(query, connection))
             {
-                using (SqlCommand command = new SqlCommand(query, connection))
+                if (parameters != null)
                 {
-                    if (parameters != null)
-                    {
-                        command.Parameters.AddRange(parameters);
-                    }
-
-                    connection.Open();
-                    DataTable dataTable = new DataTable();
-                    dataTable.Load(command.ExecuteReader());
-                    return dataTable;
+                    command.Parameters.AddRange(parameters);
                 }
+
+                DataTable dataTable = new DataTable();
+                dataTable.Load(command.ExecuteReader());
+                closeConnection();
+
+                return dataTable;
             }
+        }
+
+        public void BeginTransaction()
+        {
+            openConnection();
+            transaction = connection.BeginTransaction();
+        }
+
+        public void CommitTransaction()
+        {
+            if (transaction != null)
+            {
+                transaction.Commit();
+                transaction = null;
+            }
+            closeConnection();
+        }
+
+        public void RollbackTransaction()
+        {
+            if (transaction != null)
+            {
+                transaction.Rollback();
+                transaction = null;
+            }
+            closeConnection();
         }
     }
 }

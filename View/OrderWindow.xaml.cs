@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Kurs.DataBase;
 
 namespace Kurs.View
 {
@@ -22,61 +23,49 @@ namespace Kurs.View
     /// </summary>
     public partial class OrderWindow : Window
     {
-        private DataBase dataBase = new DataBase();
+        private readonly DatabaseManager databaseManager;
         private List<Order> orders;
 
-        public OrderWindow(User user)
+        public OrderWindow(User user, DatabaseManager databaseManager)
         {
             InitializeComponent();
-
-            initDataGrid(user);
+            this.databaseManager = databaseManager;
+            InitializeDataGrid(user);
         }
 
-        public OrderWindow(model.Admin admin)
+        public OrderWindow(model.Admin admin, DatabaseManager databaseManager)
         {
             InitializeComponent();
-
-            initDataGrid(admin);
+            this.databaseManager = databaseManager;
+            InitializeDataGrid(admin);
         }
 
-
-        private void initDataGrid(Object user)
+        private void InitializeDataGrid(object user)
         {
-            dataBase.openConnection();
-            SqlDataAdapter adapter = new SqlDataAdapter();
-            DataTable dataTable = new DataTable();
-
-            String query;
+            string query;
             if (user is User)
             {
                 User us = (User)user;
-                query = $"select time_order, login_user, name_product, count_purchase from [order] where login_user='{us.login}'";
+                query = $"SELECT time_order, login_user, name_product, count_purchase FROM [order] WHERE login_user='{us.login}'";
             }
             else
             {
-                query = $"select time_order, login_user, name_product, count_purchase from [order]";
+                query = $"SELECT time_order, login_user, name_product, count_purchase FROM [order]";
             }
 
-            SqlCommand command = new SqlCommand(query, dataBase.getConnection());
-
-            adapter.SelectCommand = command;
-            adapter.Fill(dataTable);
-            dataBase.closeConnection();
-
-            orders = getListOrder(dataTable);
+            DataTable dataTable = databaseManager.ExecuteQuery(query);
+            orders = GetOrderList(dataTable);
             mainDataGrid.ItemsSource = orders;
         }
 
-        private List<Order> getListOrder(DataTable dataTable)
+        private List<Order> GetOrderList(DataTable dataTable)
         {
             List<Order> orders = new List<Order>();
-            for (int i = 0; i < dataTable.Rows.Count; i++)
+            foreach (DataRow row in dataTable.Rows)
             {
-                DataRow row = dataTable.Rows[i];
-
-                DateTime time = DateTime.Parse(row["time_order"].ToString()); ;
-                String login = row["login_user"].ToString();
-                String name = row["name_product"].ToString();
+                DateTime time = DateTime.Parse(row["time_order"].ToString());
+                string login = row["login_user"].ToString();
+                string name = row["name_product"].ToString();
                 int countForPurchase = Convert.ToInt32(row["count_purchase"]);
 
                 orders.Add(new Order(time, login, name, countForPurchase));

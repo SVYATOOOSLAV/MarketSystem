@@ -15,9 +15,9 @@
                 <DataGridTextColumn Header="В наличии (штук)" Binding="{Binding numberForPurchase}" IsReadOnly="True" Width="110"  CanUserSort="True"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Name="createItemButton" Content="Добавить товар" HorizontalAlignment="Left" Margin="508,67,0,0" VerticalAlignment="Top" Height="37" Width="112" Click="createItemButton_Click"/>
-        <Button Name="logOutButton" Content="Выйти" HorizontalAlignment="Left" Margin="508,10,0,0" VerticalAlignment="Top" Height="33" Width="112" Click="logOutButton_Click"/>
-        <Button x:Name="orderButton" Content="История заказов" HorizontalAlignment="Left" Margin="508,133,0,0" VerticalAlignment="Top" Height="35" Width="112" Click="orderButton_Click" />
+        <Button x:Name="CreateItemButton" Content="Добавить товар" HorizontalAlignment="Left" Margin="508,67,0,0" VerticalAlignment="Top" Height="37" Width="112" Click="CreateItemButton_Click"/>
+        <Button Name="logOutButton" Content="Выйти" HorizontalAlignment="Left" Margin="508,10,0,0" VerticalAlignment="Top" Height="33" Width="112" Click="LogOutButton_Click"/>
+        <Button x:Name="OrderButton" Content="История заказов" HorizontalAlignment="Left" Margin="508,133,0,0" VerticalAlignment="Top" Height="35" Width="112" Click="OrderButton_Click" />
 
     </Grid>
 </Window>
