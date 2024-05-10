@@ -41,7 +41,7 @@ namespace Kurs
             databaseManager.openConnection();
             addContentOnWindow();
 
-            var desiredCount = user.basket.FirstOrDefault(pair => pair.Key.nameProduct.Equals(product.nameProduct)).Value;
+            var desiredCount = user.basketManager.getBasket().FirstOrDefault(pair => pair.Key.nameProduct.Equals(product.nameProduct)).Value;
             countForPurchaseTextBox.Text = desiredCount.ToString();
             stateAfterSelectProduct = desiredCount;
 
@@ -105,7 +105,7 @@ namespace Kurs
 
             countForPurchaseTextBox.Text = (currentCount + 1).ToString();
 
-            user.addProductToBasket(product);
+            user.basketManager.addProductToBasket(product);
             product.numberForPurchase--;
 
             numberForPurchase.Content = (product.numberForPurchase).ToString();
@@ -123,7 +123,7 @@ namespace Kurs
 
             countForPurchaseTextBox.Text = (currentCount - 1).ToString();
 
-            user.removeProductFromBasket(product);
+            user.basketManager.removeProductFromBasket(product);
             product.numberForPurchase++;
 
             numberForPurchase.Content = (product.numberForPurchase).ToString();

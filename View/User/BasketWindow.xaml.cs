@@ -52,7 +52,7 @@ namespace Kurs.View.user
 
         private void ShowBasketUser()
         {
-            availableProducts = user.basket.Select(product =>
+            availableProducts = user.basketManager.getBasket().Select(product =>
                 new DesiredProduct(
                     product.Key.typeProduct,
                     product.Key.nameProduct,
@@ -131,7 +131,7 @@ namespace Kurs.View.user
 
                 databaseManager.CommitTransaction();
 
-                user.basket.Clear();
+                user.basketManager.getBasket().Clear();
                 ShowBasketUser();
 
                 MessageBox.Show("Поздравляем с приобретением, заходите еще!", "Поздравление", MessageBoxButton.OK, MessageBoxImage.Asterisk);

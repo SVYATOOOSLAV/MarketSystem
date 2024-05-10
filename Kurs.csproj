@@ -74,6 +74,7 @@
     <Compile Include="DataBase\DatabaseManager.cs" />
     <Compile Include="enums\TypeUser.cs" />
     <Compile Include="model\Admin.cs" />
+    <Compile Include="model\BasketManager.cs" />
     <Compile Include="model\DesiredProduct.cs" />
     <Compile Include="model\Order.cs" />
     <Compile Include="model\Product.cs" />
@@ -200,9 +201,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="service\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Images\basket.png" />
   </ItemGroup>

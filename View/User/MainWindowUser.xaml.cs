@@ -43,7 +43,7 @@ namespace Kurs
 
         private void MainWindowUser_Closing(object sender, CancelEventArgs e)
         {
-            if (user.basket.Count != 0)
+            if (user.basketManager.getBasket().Count != 0)
             {
                 MessageBoxResult result = MessageBox.Show("Вы уверены, что хотите закрыть приложение?\nВаш заказ пропадет", "Подтверждение", MessageBoxButton.OKCancel, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Cancel)
@@ -83,7 +83,7 @@ namespace Kurs
         private void ReturnUnpurchasedProductsToDatabase()
         {
             databaseManager.openConnection();
-            foreach (var item in user.basket)
+            foreach (var item in user.basketManager.getBasket())
             {
                 if (item.Value > 0)
                 {

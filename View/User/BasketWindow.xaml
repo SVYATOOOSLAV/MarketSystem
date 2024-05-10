@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Kurs.View.user"
         mc:Ignorable="d"
-        Title="Basket" Height="462" Width="562" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="Basket" Height="430" Width="562" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
     <Grid Margin="0,0,0,-6">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -23,7 +23,7 @@
         <TextBlock x:Name="ResultPriceValue" HorizontalAlignment="Left" Margin="161,332,0,0" TextWrapping="Wrap" Text=" руб." VerticalAlignment="Top"/>
         <TextBlock HorizontalAlignment="Left" Margin="10,370,0,0" TextWrapping="Wrap" Text="Сумма на счете" VerticalAlignment="Top"/>
         <TextBlock x:Name="budgetUser" HorizontalAlignment="Left" Margin="161,370,0,0" TextWrapping="Wrap" Text=" руб." VerticalAlignment="Top"/>
-        <Button Content="Пополнить счет" HorizontalAlignment="Left" Margin="10,402,0,0" VerticalAlignment="Top" Width="177" Click="Button_Click"/>
-        <Button x:Name="PurchaseButton" Content="Оплатить" HorizontalAlignment="Left" Margin="338,327,0,0" VerticalAlignment="Top" Height="31" Width="79" Click="PurchaseButton_Click"/>
+        <Button Content="Пополнить счет" HorizontalAlignment="Left" Margin="362,330,0,0" VerticalAlignment="Top" Width="176" Click="Button_Click" BorderBrush="#FF020202" Background="White"/>
+        <Button x:Name="PurchaseButton" Content="Оплатить" HorizontalAlignment="Left" Margin="362,370,0,0" VerticalAlignment="Top" Height="20" Width="176" Click="PurchaseButton_Click" Background="White" BorderBrush="Black"/>
     </Grid>
 </Window>
